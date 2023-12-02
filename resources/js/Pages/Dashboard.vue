@@ -8,13 +8,21 @@ import { Head } from '@inertiajs/vue3';
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Dashboard</h2>
+            <h2>Dashboard</h2>
         </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">You're logged in!</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <button class="btn btn-secondary btn-lg">
+                        <i class="bi bi-plus-lg"></i> New match
+                    </button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-lg">View matches</button>
+                </div>
+                <div class="col-md-4">
+                    <button class="btn btn-lg">New match</button>
                 </div>
             </div>
         </div>
