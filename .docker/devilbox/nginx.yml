@@ -52,7 +52,7 @@ vhost: |
       access_log   "__ACCESS_LOG__" combined;
       error_log    "__ERROR_LOG__" warn;
 
-      set $production score.joeke.dev;
+      set $production pool.joeke.dev;
 
   __REDIRECT__
   __SSL__
@@ -74,7 +74,7 @@ vhost_type:
   # Normal vHost (-p)
   docroot: |
     # Define the vhost to serve files
-    root         "/shared/httpd/score.joeke.dev/public";
+    root         "/shared/httpd/pool.joeke.dev/public";
     index        __INDEX__;
 
   # Reverse Proxy (-r)
