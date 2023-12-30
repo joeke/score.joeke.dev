@@ -29,3 +29,10 @@
 @import "bootstrap/scss/alert";
 @import "bootstrap/scss/type";
 @import "bootstrap/scss/dropdown";
+@import "bootstrap/scss/modal";
+
+.modal-open .modal-backdrop {
+    backdrop-filter: blur(5px);
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 1 !important;
+  }

@@ -1,11 +1,13 @@
+$font-family-base: 'Figtree', sans-serif;
+
 // Colors generated with https://huemint.com/bootstrap-basic/
-$primary:       #d9543b;
-$secondary:     #6aae62;
+$primary:       #6aae62;
+$secondary:     #d9543b;
 $success:       #76c634;
 $info:          #eded8c;
 $warning:       #fdcc92;
-$danger:        #fb246e;
-$light:         #8ce1a3;
+$danger:        #d31111;
+$light:         #cce0d2;
 $dark:          #0e1634;
 
 @import "bootstrap/scss/variables";

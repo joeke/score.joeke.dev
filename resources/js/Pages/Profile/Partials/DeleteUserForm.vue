@@ -48,48 +48,40 @@ const closeModal = () => {
             </p>
         </header>
 
-        <DangerButton @click="confirmUserDeletion">Delete Account</DangerButton>
+        <button type="button" class="btn btn-lg btn-danger" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Delete Account</button>
 
-        <Modal :show="confirmingUserDeletion" @close="closeModal">
-            <div class="p-6">
-                <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-                    Are you sure you want to delete your account?
-                </h2>
+        <div class="modal fade" id="deleteAccountModal"  tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Are you sure you want to delete your account?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Once your account is deleted, all of its resources and data will be permanently deleted. Please
+                        enter your password to confirm you would like to permanently delete your account.</p>
 
-                <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                    Once your account is deleted, all of its resources and data will be permanently deleted. Please
-                    enter your password to confirm you would like to permanently delete your account.
-                </p>
+                        <div class="form-floating mb-3">
+                            <TextInput
+                                id="password"
+                                ref="passwordInput"
+                                v-model="form.password"
+                                type="password"
+                                placeholder="Password"
+                                @keyup.enter="deleteUser"
+                            />
+                            <InputLabel for="password" value="Password" class="sr-only" />
 
-                <div class="mt-6">
-                    <InputLabel for="password" value="Password" class="sr-only" />
+                            <InputError :message="form.errors.password" class="mt-2" />
+                        </div>
 
-                    <TextInput
-                        id="password"
-                        ref="passwordInput"
-                        v-model="form.password"
-                        type="password"
-                        class="mt-1 block w-3/4"
-                        placeholder="Password"
-                        @keyup.enter="deleteUser"
-                    />
-
-                    <InputError :message="form.errors.password" class="mt-2" />
-                </div>
-
-                <div class="mt-6 flex justify-end">
-                    <SecondaryButton @click="closeModal"> Cancel </SecondaryButton>
-
-                    <DangerButton
-                        class="ms-3"
-                        :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing"
-                        @click="deleteUser"
-                    >
-                        Delete Account
-                    </DangerButton>
+                        <div class="mt-4 d-flex">
+                            <button class="btn btn-light" @click="closeModal"> Cancel </button>
+                            <DangerButton class="ms-auto" :disabled="form.processing" @click="deleteUser">Delete Account</DangerButton>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </Modal>
+        </div>
     </section>
 </template>

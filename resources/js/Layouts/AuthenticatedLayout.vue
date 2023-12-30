@@ -41,13 +41,13 @@ const showingNavigationDropdown = ref(false);
 
         <!-- Page Heading -->
         <div class="container-xl">
-            <header class="py-2" v-if="$slots.header">
+            <header class="mt-3 mb-4" v-if="$slots.header">
                 <slot name="header" />
             </header>
         </div>
 
         <!-- Page Content -->
-        <main>
+        <main class="container-xl">
             <slot />
         </main>
     </section>

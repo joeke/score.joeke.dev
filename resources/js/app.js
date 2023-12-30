@@ -3,6 +3,7 @@ import '../scss/app.scss';
 import 'bootstrap/js/dist/button';
 import 'bootstrap/js/dist/collapse';
 import 'bootstrap/js/dist/dropdown';
+import 'bootstrap/js/dist/modal';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';

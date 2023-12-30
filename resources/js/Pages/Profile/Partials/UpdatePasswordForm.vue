@@ -44,51 +44,48 @@ const updatePassword = () => {
         </header>
 
         <form @submit.prevent="updatePassword" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="current_password" value="Current Password" />
-
+            <div class="form-floating mb-3">
                 <TextInput
                     id="current_password"
                     ref="currentPasswordInput"
                     v-model="form.current_password"
                     type="password"
-                    class="mt-1 block w-full"
                     autocomplete="current-password"
+                    placeholder="Current Password"
                 />
+                <InputLabel for="current_password" value="Current Password" />
 
                 <InputError :message="form.errors.current_password" class="mt-2" />
             </div>
 
-            <div>
-                <InputLabel for="password" value="New Password" />
-
+            <div class="form-floating mb-3">
                 <TextInput
                     id="password"
                     ref="passwordInput"
                     v-model="form.password"
                     type="password"
-                    class="mt-1 block w-full"
                     autocomplete="new-password"
+                    placeholder="New Password"
                 />
+                <InputLabel for="password" value="New Password" />
 
                 <InputError :message="form.errors.password" class="mt-2" />
             </div>
 
-            <div>
-                <InputLabel for="password_confirmation" value="Confirm Password" />
-
+            <div class="form-floating mb-3">
                 <TextInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
                     type="password"
-                    class="mt-1 block w-full"
                     autocomplete="new-password"
+                    placeholder="Confirm Password"
                 />
+                <InputLabel for="password_confirmation" value="Confirm Password" />
 
                 <InputError :message="form.errors.password_confirmation" class="mt-2" />
             </div>
 
-            <div class="flex items-center gap-4">
+            <div>
                 <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
 
                 <Transition

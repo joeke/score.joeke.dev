@@ -8,21 +8,21 @@ import { Head } from '@inertiajs/vue3';
 
     <AuthenticatedLayout>
         <template #header>
-            <h2>Dashboard</h2>
+            <h1>Dashboard</h1>
         </template>
 
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <button class="btn btn-secondary btn-lg">
-                        <i class="bi bi-plus-lg"></i> New match
-                    </button>
+                    <a class="btn btn-primary btn-lg" :href="route('profile.edit')">
+                        <i class="bi bi-plus-lg"></i> New game
+                    </a>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-lg">View matches</button>
+                    <a class="btn btn-lg">View matches</a>
                 </div>
                 <div class="col-md-4">
-                    <button class="btn btn-lg">New match</button>
+                    <a class="btn btn-lg">New match</a>
                 </div>
             </div>
         </div>

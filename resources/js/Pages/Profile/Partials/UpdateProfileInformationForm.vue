@@ -33,33 +33,31 @@ const form = useForm({
         </header>
 
         <form @submit.prevent="form.patch(route('profile.update'))" class="mt-6 space-y-6">
-            <div>
-                <InputLabel for="name" value="Name" />
-
+            <div class="form-floating mb-3">
                 <TextInput
                     id="name"
                     type="text"
-                    class="mt-1 block w-full"
                     v-model="form.name"
                     required
                     autofocus
                     autocomplete="name"
+                    placeholder="Name"
                 />
+                <InputLabel for="name" value="Name" />
 
                 <InputError class="mt-2" :message="form.errors.name" />
             </div>
 
-            <div>
-                <InputLabel for="email" value="Email" />
-
+            <div class="form-floating mb-3">
                 <TextInput
                     id="email"
                     type="email"
-                    class="mt-1 block w-full"
                     v-model="form.email"
                     required
                     autocomplete="username"
+                    placeholder="Email"
                 />
+                <InputLabel for="email" value="Email" />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
@@ -85,7 +83,7 @@ const form = useForm({
                 </div>
             </div>
 
-            <div class="flex items-center gap-4">
+            <div>
                 <PrimaryButton :disabled="form.processing">Save</PrimaryButton>
 
                 <Transition

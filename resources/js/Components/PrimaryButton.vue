@@ -1,6 +1,6 @@
 <template>
     <button
-        class="btn btn-secondary"
+        class="btn btn-primary"
     >
         <slot />
     </button>
