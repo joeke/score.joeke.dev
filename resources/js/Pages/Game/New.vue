@@ -11,8 +11,9 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('game/create'), {
-        onFinish: () => form.reset('password')
+    form.post(route('game/store'), {
+        onStart: () => form.setProcessing(true),
+        onFinish: () => form.reset()
     });
 };
 
@@ -53,7 +54,7 @@ const submit = () => {
                     <InputLabel for="player_2" value="Player 2" />
                     <select id="player_2" class="form-select form-select-lg">
                         <option>None (solo game)</option>
-                        <option selected>Player 2</option>
+                        <option>Player 2</option>
                     </select>
                 </div>
             </div>

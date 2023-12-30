@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GameController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -17,15 +16,6 @@ use Inertia\Inertia;
 |
 */
 
-// Route::get('/', function () {
-//     return Inertia::render('Welcome', [
-//         'canLogin' => Route::has('login'),
-//         'canRegister' => Route::has('register'),
-//         'laravelVersion' => Application::VERSION,
-//         'phpVersion' => PHP_VERSION,
-//     ]);
-// });
-
 Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('/', function () {
         return Inertia::render('Dashboard');
@@ -35,6 +25,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/game/new', [GameController::class, 'new'])->name('game.new');
+    Route::post('/game/store', [GameController::class, 'store'])->name('game.store');
+    Route::get('/game/{id}', [GameController::class, 'show'])->name('game.show');
 });
 
 require __DIR__.'/auth.php';
