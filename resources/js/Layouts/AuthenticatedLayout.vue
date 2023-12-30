@@ -41,7 +41,7 @@ const showingNavigationDropdown = ref(false);
 
         <!-- Page Heading -->
         <div class="container-xl">
-            <header class="mt-3 mb-4" v-if="$slots.header">
+            <header class="my-4" v-if="$slots.header">
                 <slot name="header" />
             </header>
         </div>
