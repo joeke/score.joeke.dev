@@ -27,14 +27,21 @@ class GameController extends Controller
     {
         $request->validate([
             'type' => 'required',
-            'player_1' => 'required'
+            'player_id' => 'required',
+            'score_goal' => 'required',
         ]);
 
         $game = Game::create([
-            // TODO
+            'type' => $request->type,
+            'player_id' => $request->player_id ?? $request->user()->id,
+            'opponent_id' => $request->opponent_id,
+            'score_goal' => $request->score_goal,
+            'start_date' => $request->start_date,
+            'end_date' => $request->end_date,
+            'created_by' => $request->user()->id
         ]);
 
-        return redirect()->route('game.show', ['id' => 1]);
+        return redirect()->route('game.show', ['id' => $game->id]);
     }
 
     /**
