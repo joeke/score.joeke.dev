@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\GameScore;
 
 class Game extends Model
 {
@@ -33,4 +35,12 @@ class Game extends Model
         'start_date' => 'datetime',
         'end_date' => 'datetime'
     ];
+
+    /**
+     * Get the scores/innings for this game.
+     */
+    public function scores(): HasMany
+    {
+        return $this->hasMany(GameScore::class);
+    }
 }
