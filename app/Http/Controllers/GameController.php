@@ -40,8 +40,10 @@ class GameController extends Controller
     /**
      * Show the game form.
      */
-    public function show(): Response
+    public function show(Game $game): Response
     {
-        return Inertia::render('Game/Show');
+        return Inertia::render('Game/Show', [
+          'game' => $game
+        ]);
     }
 }

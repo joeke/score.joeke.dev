@@ -13,22 +13,28 @@ return new class extends Migration
     {
         Schema::create('games', function (Blueprint $table) {
             $table->id();
-            $table->integer('player_user_id')->default(0);
-            $table->integer('opponent_user_id')->default(0);
+            $table->unsignedInteger('player_id')->default(0);
+            $table->unsignedInteger('opponent_id')->default(0);
             $table->integer('score_goal')->default(0);
             $table->timestamp('start_date')->useCurrent();
             $table->timestamp('end_date')->nullable();
             $table->integer('is_finished')->default(0);
+            $table->integer('created_by')->default(0);
             $table->timestamps();
+
+            $table->foreign('player_id')->references('id')->on('users');
+            $table->foreign('opponent_id')->references('id')->on('users');
         });
 
         Schema::create('game_scores', function (Blueprint $table) {
             $table->id();
-            $table->integer('game_id')->default(0);
-            $table->integer('player_id')->default(0);
+            $table->unsignedInteger('game_id')->default(0);
+            $table->unsignedInteger('player_id')->default(0);
             $table->integer('points')->default(0);
             $table->integer('foul_points')->default(0);
-            $table->timestamps();
+
+            $table->foreign('game_id')->references('id')->on('games');
+            $table->foreign('player_id')->references('id')->on('users');
         });
     }
 

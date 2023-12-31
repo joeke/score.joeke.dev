@@ -19,10 +19,10 @@ import { Head } from '@inertiajs/vue3';
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <a class="btn btn-lg">View matches</a>
+
                 </div>
                 <div class="col-md-4">
-                    <a class="btn btn-lg">New match</a>
+
                 </div>
             </div>
         </div>
