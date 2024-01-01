@@ -10,7 +10,7 @@ class DashboardController extends Controller
 {
     public function index(): Response
     {
-        $games = Game::where('created_by', auth()->user()->id)->get();
+        $games = Game::where('created_by', auth()->user()->id)->orderBy('created_at', 'desc')->get();
 
         return Inertia::render('Dashboard', [
             'games' => $games
