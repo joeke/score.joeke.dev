@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Game;
+use App\Models\GameType;
 use App\Models\User;
 
 class GameController extends Controller
@@ -17,9 +18,11 @@ class GameController extends Controller
     public function new(): Response
     {
         $players = User::all();
+        $types = GameType::all();
 
         return Inertia::render('Game/New', [
-            'players' => $players
+            'players' => $players,
+            'gameTypes' => $types
         ]);
     }
 
@@ -54,10 +57,36 @@ class GameController extends Controller
      */
     public function show(int $id): Response
     {
-        $game = Game::where('id', $id);
+        $game = Game::where('id', $id)->with('scores')->first();
 
         return Inertia::render('Game/Show', [
-            'game' => $game->with('scores')->first()
+            'game' => $game,
+            'scores' => $this->calculateScores($game)
         ]);
+    }
+
+    private function calculateScores($game)
+    {
+        $scores = $game->scores;
+
+        $playerTotal = 0;
+        $opponentTotal = 0;
+
+        foreach ($scores as $score) {
+            if ($score->player_id == $game->player_id) {
+                $playerTotal += $score->points;
+            } else {
+                $opponentTotal += $score->points;
+            }
+        }
+
+        return [
+            'player' => [
+                'total' => $playerTotal,
+            ],
+            'opponent' => [
+                'total' => $opponentTotal
+            ]
+        ];
     }
 }

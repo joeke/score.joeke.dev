@@ -5,14 +5,15 @@ import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import { Head, useForm, usePage } from '@inertiajs/vue3';
 
+const players = usePage().props.players;
+const gameTypes = usePage().props.gameTypes;
+
 const form = useForm({
-    type: 1,
+    type: gameTypes[0]?.id || 0,
     score_goal: 100,
     player_id: usePage().props.auth.user.id || 0,
     opponent_id: 0,
 });
-
-const players = usePage().props.players;
 
 const submit = () => {
     form.post(route('game.store'), {
@@ -35,7 +36,7 @@ const submit = () => {
                 <div class="col-12 col-md-6 mb-4">
                     <InputLabel for="type" value="Type" />
                     <select id="type" class="form-select form-select-lg" v-model="form.type">
-                        <option value="1" selected>Straight / 14.1</option>
+                        <option v-for="gameType in gameTypes" :key="gameType.id" :value="gameType.id">{{ gameType.name }}</option>
                     </select>
                 </div>
 
