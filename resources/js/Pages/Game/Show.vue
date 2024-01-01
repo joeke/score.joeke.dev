@@ -18,7 +18,7 @@ const submit = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h1>Game</h1>
+            <h1>Game #{{ game.id }}</h1>
         </template>
 
         {{ game }}

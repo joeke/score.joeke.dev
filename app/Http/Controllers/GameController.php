@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Game;
+use App\Models\User;
 
 class GameController extends Controller
 {
@@ -15,7 +16,11 @@ class GameController extends Controller
      */
     public function new(): Response
     {
-        return Inertia::render('Game/New');
+        $players = User::all();
+
+        return Inertia::render('Game/New', [
+            'players' => $players
+        ]);
     }
 
     /**
@@ -47,10 +52,12 @@ class GameController extends Controller
     /**
      * Show the game form.
      */
-    public function show(Game $game): Response
+    public function show(int $id): Response
     {
+        $game = Game::where('id', $id);
+
         return Inertia::render('Game/Show', [
-          'game' => $game
+            'game' => $game->with('scores')->first()
         ]);
     }
 }

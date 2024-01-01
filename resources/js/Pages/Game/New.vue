@@ -3,14 +3,16 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
 
 const form = useForm({
     type: 1,
     score_goal: 100,
-    player_id: 0,
+    player_id: usePage().props.auth.user.id || 0,
     opponent_id: 0,
 });
+
+const players = usePage().props.players;
 
 const submit = () => {
     form.post(route('game.store'), {
@@ -47,15 +49,17 @@ const submit = () => {
                 <div class="col-12 col-md-6 mb-4">
                     <InputLabel for="player_1" value="Player 1" />
                     <select id="player_1" class="form-select form-select-lg" v-model="form.player_id">
-                        <option value="1" selected>Player 1</option>
+                        <option disabled selected>Select player 1</option>
+                        <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
                     </select>
                 </div>
 
                 <div class="col-12 col-md-6 mb-4">
                     <InputLabel for="player_2" value="Player 2" />
                     <select id="player_2" class="form-select form-select-lg" v-model="form.opponent_id">
-                        <option>None (solo game)</option>
-                        <option>Player 2</option>
+                        <option disabled selected>Select player 2</option>
+                        <option value="0">None (solo game)</option>
+                        <option v-for="player in players" :key="player.id" :value="player.id">{{ player.name }}</option>
                     </select>
                 </div>
             </div>
