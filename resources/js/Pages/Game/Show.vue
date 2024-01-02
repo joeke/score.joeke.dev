@@ -24,12 +24,12 @@ const submit = () => {
 
         <div class="game">
             <div class="player">
-                <h4>{{ game.player_name }}</h4>
+                <div class="name">{{ game.player_name }}</div>
                 <div class="score">{{ scores.player.total }}</div>
             </div>
 
             <div v-if="game.opponent_id" class="player">
-                <h4>{{ game.opponent_name }}</h4>
+                <div class="name">{{ game.opponent_name }}</div>
                 <div class="score">{{ scores.opponent.total }}</div>
             </div>
         </div>
@@ -42,22 +42,29 @@ const submit = () => {
 
 <style lang="scss" scoped>
     .game {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        gap: 1rem;
+        display: grid;
+        grid-auto-columns: minmax(0, 1fr);
+        grid-auto-rows: 1fr;
+        grid-auto-flow: column;
 
         .player {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
+            display: grid;
             align-items: center;
-            gap: 1rem;
+            justify-content: center;
+        }
+
+        .name {
+            font-size: 1.25rem;
+            line-height: 1;
+            text-align: center;
+            align-self: flex-start;
         }
 
         .score {
             font-size: 5rem;
             line-height: 1;
+            text-align: center;
+            align-self: flex-end;
         }
     }
 </style>
