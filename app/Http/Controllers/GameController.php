@@ -59,34 +59,60 @@ class GameController extends Controller
     {
         $game = Game::where('id', $id)->with('scores')->first();
 
+        $scores = $this->calculateScores($game);
+
         return Inertia::render('Game/Show', [
             'game' => $game,
+            'players' => [
+                $game->player_id => [
+                    'id' => $game->player_id,
+                    'name' => $this->getPlayerName($game->player_id),
+                    'total_points' => $scores && $scores[$game->player_id] ? $scores[$game->player_id]['total_points'] : 0,
+                ],
+                $game->opponent_id => [
+                    'id' => $game->opponent_id,
+                    'name' => $this->getPlayerName($game->opponent_id),
+                    'total_points' => $scores && $scores[$game->opponent_id] ? $scores[$game->opponent_id]['total_points'] : 0,
+                ]
+            ],
             'scores' => $this->calculateScores($game)
         ]);
     }
 
     private function calculateScores($game)
     {
-        $scores = $game->scores;
+        $scores = $game->scores->groupBy('player_id');
 
-        $playerTotal = 0;
-        $opponentTotal = 0;
+        $output = [];
 
-        foreach ($scores as $score) {
-            if ($score->player_id == $game->player_id) {
-                $playerTotal += $score->points;
-            } else {
-                $opponentTotal += $score->points;
+        foreach ($scores as $playerId => $innings) {
+            $totalPoints = 0;
+            $foulPoints = 0;
+
+            foreach ($innings as $score) {
+                $totalPoints += ($score->points - $score->foul_points);
+                $foulPoints += $score->foul_points;
             }
+
+            $output[$playerId] = [
+                'id' => $playerId,
+                'name' => $this->getPlayerName($playerId),
+                'total_points' => $totalPoints,
+                'foul_points' => $foulPoints,
+                'high_run' => $innings->max('points'),
+                'ppi' => round($totalPoints / count($innings), 2),
+                'innings_count' => count($innings),
+                'innings' => $innings,
+            ];
         }
 
-        return [
-            'player' => [
-                'total' => $playerTotal,
-            ],
-            'opponent' => [
-                'total' => $opponentTotal
-            ]
-        ];
+        return $output;
+    }
+
+    private function getPlayerName($id)
+    {
+        $player = User::where('id', $id)->first();
+
+        return $player->name;
     }
 }

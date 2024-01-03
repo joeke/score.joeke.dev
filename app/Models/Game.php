@@ -43,9 +43,7 @@ class Game extends Model
      */
     protected $appends = [
         'start_date_formatted',
-        'end_date_formatted',
-        'player_name',
-        'opponent_name'
+        'end_date_formatted'
     ];
 
     /**
@@ -77,32 +75,6 @@ class Game extends Model
 
         if ($date) {
             return $date->format('Y-m-d');
-        }
-
-        return null;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getPlayerNameAttribute() {
-        $player = User::where('id', $this->player_id)->first();
-
-        if ($player) {
-            return $player->name;
-        }
-
-        return null;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getOpponentNameAttribute() {
-        $opponent = User::where('id', $this->opponent_id)->first();
-
-        if ($opponent) {
-            return $opponent->name;
         }
 
         return null;
