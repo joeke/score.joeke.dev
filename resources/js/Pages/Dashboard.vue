@@ -23,8 +23,8 @@ const games = usePage().props.games;
                     <span>#{{ game.id }}</span>
                     <span>{{ game.start_date_formatted }}</span>
                     <span>{{ game.type }}</span>
-                    <span>{{ game.player_name }}</span>
-                    <span>{{ game.opponent_name }}</span>
+                    <span>{{ game.player.name }}</span>
+                    <span>{{ game.opponent.name }}</span>
                 </Link>
             </div>
         </div>

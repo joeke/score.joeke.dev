@@ -61,20 +61,17 @@ class GameController extends Controller
 
         $scores = $this->calculateScores($game);
 
+        $players = [];
+        if ($game->player_id && $game->player_id > 0) {
+            $players[$game->player_id] = $this->getPlayerMeta($game->player_id, $scores);
+        }
+        if ($game->opponent_id && $game->opponent_id > 0) {
+            $players[$game->opponent_id] = $this->getPlayerMeta($game->opponent_id, $scores);
+        }
+
         return Inertia::render('Game/Show', [
             'game' => $game,
-            'players' => [
-                $game->player_id => [
-                    'id' => $game->player_id,
-                    'name' => $this->getPlayerName($game->player_id),
-                    'total_points' => $scores && $scores[$game->player_id] ? $scores[$game->player_id]['total_points'] : 0,
-                ],
-                $game->opponent_id => [
-                    'id' => $game->opponent_id,
-                    'name' => $this->getPlayerName($game->opponent_id),
-                    'total_points' => $scores && $scores[$game->opponent_id] ? $scores[$game->opponent_id]['total_points'] : 0,
-                ]
-            ],
+            'players' => $players,
             'scores' => $this->calculateScores($game)
         ]);
     }
@@ -113,6 +110,19 @@ class GameController extends Controller
     {
         $player = User::where('id', $id)->first();
 
-        return $player->name;
+        if ($player) {
+            return $player->name;
+        }
+
+        return null;
+    }
+
+    private function getPlayerMeta($id, $scores)
+    {
+        return [
+            'id' => $id,
+            'name' => $this->getPlayerName($id),
+            'total_points' => $scores && $scores[$id] ? $scores[$id]['total_points'] : 0,
+        ];
     }
 }

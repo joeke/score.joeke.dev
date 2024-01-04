@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\GameScore;
 
 class Game extends Model
@@ -52,6 +53,16 @@ class Game extends Model
     public function scores(): HasMany
     {
         return $this->hasMany(GameScore::class);
+    }
+
+    public function player(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'player_id');
+    }
+
+    public function opponent(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'opponent_id')->withDefault();
     }
 
     /**
