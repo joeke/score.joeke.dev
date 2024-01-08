@@ -8,6 +8,7 @@ use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Game;
 use App\Models\GameType;
+use App\Models\GameScore;
 use App\Models\User;
 
 class GameController extends Controller
@@ -53,6 +54,30 @@ class GameController extends Controller
     }
 
     /**
+     * Add an inning/score to the game.
+     */
+    public function addScore(Request $request)
+    {
+        $request->validate([
+            'game' => 'required',
+            'points' => 'required',
+            'player_id' => 'required',
+            'balls_remaining' => 'required'
+        ]);
+
+        Game::where('id', $request->game)->update([
+            'balls_left' => $request->balls_remaining
+        ]);
+
+        GameScore::create([
+            'game_id' => $request->game,
+            'player_id' => $request->player_id,
+            'points' => $request->points,
+            'foul_points' => $request->foul_points ?? 0
+        ]);
+    }
+
+    /**
      * Show the game form.
      */
     public function show(int $id): Response
@@ -69,10 +94,15 @@ class GameController extends Controller
             $players[$game->opponent_id] = $this->getPlayerMeta($game->opponent_id, $scores);
         }
 
+        // Determine which player is next by finding the player_id for last inning.
+        $gameScores = $game->scores->toArray();
+        $lastInning = end($gameScores);
+        $game['active_player'] = $lastInning['player_id'] === $game->player_id ? $game->opponent_id : $game->player_id;
+
         return Inertia::render('Game/Show', [
             'game' => $game,
             'players' => $players,
-            'scores' => $this->calculateScores($game)
+            'scores' => $scores
         ]);
     }
 

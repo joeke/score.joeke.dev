@@ -26,6 +26,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::get('/game/new', [GameController::class, 'new'])->name('game.new');
     Route::post('/game/store', [GameController::class, 'store'])->name('game.store');
+    Route::post('/game/add-score', [GameController::class, 'addScore'])->name('game.add-score');
     Route::get('/game/{id}', [GameController::class, 'show'])->name('game.show');
 });
 

@@ -15,7 +15,7 @@ const showingNavigationDropdown = ref(false);
         <nav class="navbar navbar-expand-lg bg-body-tertiary">
             <div class="container-xl">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavBar" aria-controls="mainNavBar" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                    <i class="bi bi-list"></i>
                 </button>
 
                 <div class="collapse navbar-collapse" id="mainNavBar">

@@ -32,8 +32,21 @@
 @import "bootstrap/scss/modal";
 @import "bootstrap/scss/tables";
 
+@import "_game";
+
 .modal-open .modal-backdrop {
     backdrop-filter: blur(5px);
     background-color: rgba(0, 0, 0, 0.5);
     opacity: 1 !important;
-  }
+}
+
+.navbar-toggler {
+    --bs-navbar-toggler-border-color: transparent;
+    --bs-navbar-toggler-focus-width: 0;
+    padding: 0.2rem;
+    font-size: 2rem;
+
+    &:focus {
+        background: tint-color($tertiary, 10);
+    }
+}
