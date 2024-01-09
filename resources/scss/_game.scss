@@ -1,3 +1,10 @@
+.game-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
 .game {
     display: grid;
     grid-auto-columns: minmax(0, 1fr);
@@ -15,7 +22,7 @@
         &.active {
             position: relative;
             background: linear-gradient(180deg, transparent 10%, rgba($secondary, 0.3) 100%);
-            border-color: shade-color($secondary, 25);
+            border-color: shade-color($secondary, 15);
 
             &::after {
                 content: '';
@@ -26,7 +33,7 @@
                 height: 0;
                 border-left: 8px solid transparent;
                 border-right: 8px solid transparent;
-                border-bottom: 8px solid shade-color($secondary, 25);
+                border-bottom: 8px solid shade-color($secondary, 15);
             }
         }
     }

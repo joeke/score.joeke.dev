@@ -143,9 +143,10 @@
 
     <AuthenticatedLayout>
         <template #header>
-            <div class="d-flex align-items-center gap-4">
+            <div class="game-title">
                 <h2>Game #{{ game.id }}</h2>
-                <h6 class="ms-auto date text-gray-200">Started on: {{ game.start_date_formatted }}</h6>
+                <h6 class="text-gray-500">Race to: <b>{{ game.score_goal }}</b></h6>
+                <h6 class="text-gray-500">Started on: <b>{{ game.start_date_formatted }}</b></h6>
             </div>
         </template>
 
