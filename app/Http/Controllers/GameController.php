@@ -153,7 +153,7 @@ class GameController extends Controller
         return [
             'id' => $id,
             'name' => $this->getPlayerName($id),
-            'total_points' => $scores && $scores[$id] ? $scores[$id]['total_points'] : 0,
+            'total_points' => $scores && isset($scores[$id]) ? $scores[$id]['total_points'] : 0,
         ];
     }
 

@@ -9,15 +9,25 @@
         align-items: center;
         justify-content: center;
         gap: .5rem;
-        border-right: 1px solid rgba(255,255,255,0.1);
-        padding: .75rem;
-
-        &:last-child {
-            border-right: none;
-        }
+        padding: .75rem .75rem 1.25rem;
+        border-bottom: 2px solid transparent;
 
         &.active {
-            background-color: shade-color($primary, 40);
+            position: relative;
+            background: linear-gradient(180deg, transparent 10%, rgba($secondary, 0.3) 100%);
+            border-color: shade-color($secondary, 25);
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 0;
+                height: 0;
+                border-left: 8px solid transparent;
+                border-right: 8px solid transparent;
+                border-bottom: 8px solid shade-color($secondary, 25);
+            }
         }
     }
 
@@ -29,8 +39,8 @@
     }
 
     .score {
-        font-size: 4rem;
-        line-height: 1;
+        font-size: 3.4rem;
+        line-height: 1.1;
         text-align: center;
         align-self: flex-end;
     }
@@ -58,6 +68,23 @@
     padding: 0.1rem 0;
     margin-bottom: 0.5rem;
     border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.actions {
+    margin: 1rem auto;
+    text-align: center;
+
+    .buttons {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 0.5rem 0;
+
+        button {
+            width: 50%;
+            max-width: 14rem;
+        }
+    }
 }
 
 .balls {
