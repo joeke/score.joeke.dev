@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, usePage, useForm  } from '@inertiajs/vue3';
-import { computed, ref, reactive, onMounted } from 'vue';
+import { Head, usePage, useForm, useRemember } from '@inertiajs/vue3';
+import { computed, ref, onMounted } from 'vue';
 import {Modal} from 'bootstrap';
 
 const page = usePage();
@@ -17,14 +17,20 @@ const players = computed(() => page.props.players);
 const scores = computed(() => page.props.scores);
 
 let currentScore = ref(0);
-
-let scoreModal = reactive(null)
+let ballsRemaining = ref(game.value.balls_left);
+let ballsRemainingPrevious = useRemember(ballsRemaining.value);
+let foulPoints = ref(0);
+let scoreModal = ref(null)
 
 onMounted(() => {
     scoreModal = new Modal('#scoreModal', {})
 })
 
 function openScoreModal(ballsAmount) {
+    const points = ballsRemaining.value - ballsAmount;
+    ballsRemaining.value = ballsAmount;
+    currentScore.value += points;
+
     scoreModal.show();
 }
 
@@ -32,26 +38,37 @@ function closeScoreModal() {
     scoreModal.hide();
 }
 
-const submitScore = (amount) => {
-    const points = game.value.balls_left - amount;
-    currentScore.value += points;
+function validateBallsRemaining() {
+    if (ballsRemaining.value > ballsRemainingPrevious.value) {
+        ballsRemaining.value = ballsRemainingPrevious.value;
+    }
+}
 
-    if (amount === 1) {
-        game.value.balls_left = 15;
+const submitScore = () => {
+    // When only 1 ball is left, continue the run for this player
+    // And set the remaining balls on table to 15 again
+    if (ballsRemaining.value === 1) {
+        ballsRemaining.value = 15;
+        ballsRemainingPrevious.value = 15;
+        closeScoreModal();
         return;
     }
 
     const form = useForm({
         game: game.value.id,
         points: currentScore.value,
+        foul_points: foulPoints.value,
         player_id: game.value.active_player,
-        balls_remaining: amount,
+        balls_remaining: ballsRemaining.value,
     });
 
     form.post(route('game.add-score'), {
         preserveScroll: true,
         onSuccess: () => {
             currentScore.value = 0;
+            foulPoints.value = 0;
+            ballsRemainingPrevious.value = ballsRemaining.value;
+            closeScoreModal();
         },
         onError: () => {
             // console.log(form.errors);
@@ -70,7 +87,10 @@ const totalBalls = () => {
 
     <AuthenticatedLayout>
         <template #header>
-            <h2>Game #{{ game.id }}</h2>
+            <div class="d-flex align-items-center gap-4">
+                <h2>Game #{{ game.id }}</h2>
+                <h6 class="ms-auto date text-gray-200">Started on: {{ game.start_date_formatted }}</h6>
+            </div>
         </template>
 
         <div class="game">
@@ -86,8 +106,8 @@ const totalBalls = () => {
         <div class="actions">
             <div class="balls">
                 <div class="row-label">Balls on table</div>
-                <div v-for="ball in totalBalls()" :key="ball" class="item" :class="{ current: game.balls_left === ball, disabled: game.balls_left < ball}">
-                    <input type="radio" class="btn-check" name="ball" :id="'ball_' + ball" autocomplete="off" :checked="game.balls_left === ball" :disabled="game.balls_left < ball" @click="openScoreModal(ball)">
+                <div v-for="ball in totalBalls()" :key="ball" class="item" :class="{ current: ballsRemaining === ball, disabled: ballsRemaining < ball}">
+                    <input type="radio" class="btn-check" :id="'ball_' + ball" v-model="ballsRemaining" :value="ball" :disabled="ballsRemaining < ball" @click="openScoreModal(ball)">
                     <label class="btn" :for="'ball_' + ball">{{ ball }}</label>
                 </div>
             </div>
@@ -121,18 +141,41 @@ const totalBalls = () => {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div>
-                            <label class="form-label">Balls on table</label>
-                            <div class="input-group mb-3">
-                                <button class="btn btn-light" type="button">-</button>
-                                <input type="number" class="form-control" v-model="game.balls_left">
-                                <button class="btn btn-primary" type="button">+</button>
+                        <div class="score-form">
+                            <div class="mb-3" v-if="game.active_player && players[game.active_player]">
+                                <label>For player:</label>
+                                <div>
+                                    <span>{{ players[game.active_player]['name'] }}</span>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Balls on table:</label>
+                                <div class="input-group">
+                                    <button class="btn btn-light" type="button">-</button>
+                                    <input type="number" class="form-control" v-model="ballsRemaining" min="1" :max="ballsRemainingPrevious" @keyup="validateBallsRemaining">
+                                    <button class="btn btn-primary" type="button">+</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Foul points:</label>
+                                <div class="input-group">
+                                    <button class="btn btn-light" type="button">-</button>
+                                    <input type="number" class="form-control" v-model="foulPoints">
+                                    <button class="btn btn-primary" type="button">+</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label>Current run:</label>
+                                <div>{{ currentScore }}</div>
                             </div>
                         </div>
 
                         <div class="mt-4 d-flex">
                             <button class="btn btn-light" @click="closeScoreModal"> Cancel </button>
-                            <button class="btn btn-primary ms-auto" @click="deleteUser">Confirm</button>
+                            <button class="btn btn-primary ms-auto" @click="submitScore">Confirm</button>
                         </div>
                     </div>
                 </div>
@@ -142,5 +185,7 @@ const totalBalls = () => {
         <pre>{{ game }}</pre>
         <hr>
         <pre>{{ scores }}</pre>
+        <hr>
+        <pre>{{ players }}</pre>
     </AuthenticatedLayout>
 </template>
