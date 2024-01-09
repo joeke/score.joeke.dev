@@ -1,10 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage, useForm  } from '@inertiajs/vue3';
-import { computed, reactive } from 'vue';
+import { computed, ref } from 'vue';
 
 const page = usePage();
-// const game = computed(() => page.props.game);
 const game = computed({
     get() {
         return page.props.game
@@ -16,22 +15,20 @@ const game = computed({
 const players = computed(() => page.props.players);
 const scores = computed(() => page.props.scores);
 
-let currentScore = reactive(0);
+let currentScore = ref(0);
 
 const submitScore = (amount) => {
     const points = game.value.balls_left - amount;
+    currentScore.value += points;
 
     if (amount === 1) {
-        currentScore += points;
-        console.log(points);
-        console.log(currentScore);
         game.value.balls_left = 15;
         return;
     }
 
     const form = useForm({
         game: game.value.id,
-        points: points,
+        points: currentScore.value,
         player_id: game.value.active_player,
         balls_remaining: amount,
     });
@@ -39,6 +36,7 @@ const submitScore = (amount) => {
     form.post(route('game.add-score'), {
         preserveScroll: true,
         onSuccess: () => {
+            currentScore.value = 0;
             console.log('success');
         },
         onError: () => {
@@ -59,22 +57,24 @@ const totalBalls = () => {
     <AuthenticatedLayout>
         <template #header>
             <h2>Game #{{ game.id }}</h2>
-            <h5>Current run: {{ currentScore }}</h5>
         </template>
 
         <div class="game">
             <div class="player" :class="{active: game.active_player === player.id}" v-for="player in players" :key="player.id">
                 <div class="name">{{ player.name }}</div>
                 <div class="score">{{ player.total_points }}</div>
+                <div class="current-run" :class="{'active' : game.active_player === player.id}">
+                    Current run: <span>{{ currentScore }}</span>
+                </div>
             </div>
         </div>
 
         <div class="actions">
             <div class="balls">
                 <div class="row-label">Balls on table</div>
-                <div v-for="ball in totalBalls()" :key="ball" class="item" :class="{ current: game.balls_left === ball, disabled: game.balls_left < ball}" @click="submitScore(ball)">
-                    <input type="radio" name="ball" :value="ball" :disabled="game.balls_left < ball">
-                    <label>{{ ball }}</label>
+                <div v-for="ball in totalBalls()" :key="ball" class="item" :class="{ current: game.balls_left === ball, disabled: game.balls_left < ball}">
+                    <input type="radio" class="btn-check" name="ball" :id="'ball_' + ball" autocomplete="off" :checked="game.balls_left === ball" :disabled="game.balls_left < ball" @click="submitScore(ball)">
+                    <label class="btn" :for="'ball_' + ball">{{ ball }}</label>
                 </div>
             </div>
         </div>
