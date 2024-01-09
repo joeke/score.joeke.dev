@@ -86,6 +86,10 @@ class GameController extends Controller
 
         $scores = $this->calculateScores($game);
 
+        if (!$scores) {
+            $game['balls_left'] = 15;
+        }
+
         $players = [];
         if ($game->player_id && $game->player_id > 0) {
             $players[$game->player_id] = $this->getPlayerMeta($game->player_id, $scores);
@@ -94,10 +98,7 @@ class GameController extends Controller
             $players[$game->opponent_id] = $this->getPlayerMeta($game->opponent_id, $scores);
         }
 
-        // Determine which player is next by finding the player_id for last inning.
-        $gameScores = $game->scores->toArray();
-        $lastInning = end($gameScores);
-        $game['active_player'] = $lastInning['player_id'] === $game->player_id ? $game->opponent_id : $game->player_id;
+        $game['active_player'] = $this->determineActivePlayer($game);
 
         return Inertia::render('Game/Show', [
             'game' => $game,
@@ -154,5 +155,26 @@ class GameController extends Controller
             'name' => $this->getPlayerName($id),
             'total_points' => $scores && $scores[$id] ? $scores[$id]['total_points'] : 0,
         ];
+    }
+
+    /**
+     * Determine which player is next by finding the player_id for last inning.
+     * If no innings, then the default player is the active player.
+     * Also check if there is an opponent, otherwise the default player is the active player.
+     *
+     * @param Game $game
+     */
+    private function determineActivePlayer(Game $game)
+    {
+        $activePlayer = $game->player_id;
+
+        $gameScores = $game->scores->toArray();
+        $lastInning = end($gameScores);
+
+        if ($lastInning && $lastInning['player_id'] === $game->player_id && $game->opponent_id) {
+            $activePlayer = $game->opponent_id;
+        }
+
+        return $activePlayer;
     }
 }
