@@ -121,9 +121,14 @@ const totalBalls = () => {
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Run: {{ currentScore }}</p>
-                        <p>Foul points: 0</p>
-                        <p>Balls remaining: {{ game.balls_left }}</p>
+                        <div>
+                            <label class="form-label">Balls on table</label>
+                            <div class="input-group mb-3">
+                                <button class="btn btn-light" type="button">-</button>
+                                <input type="number" class="form-control" v-model="game.balls_left">
+                                <button class="btn btn-primary" type="button">+</button>
+                            </div>
+                        </div>
 
                         <div class="mt-4 d-flex">
                             <button class="btn btn-light" @click="closeScoreModal"> Cancel </button>
