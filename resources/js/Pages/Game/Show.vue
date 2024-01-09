@@ -1,7 +1,8 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage, useForm  } from '@inertiajs/vue3';
-import { computed, ref } from 'vue';
+import { computed, ref, reactive, onMounted } from 'vue';
+import {Modal} from 'bootstrap';
 
 const page = usePage();
 const game = computed({
@@ -16,6 +17,20 @@ const players = computed(() => page.props.players);
 const scores = computed(() => page.props.scores);
 
 let currentScore = ref(0);
+
+let scoreModal = reactive(null)
+
+onMounted(() => {
+    scoreModal = new Modal('#scoreModal', {})
+})
+
+function openScoreModal(ballsAmount) {
+    scoreModal.show();
+}
+
+function closeScoreModal() {
+    scoreModal.hide();
+}
 
 const submitScore = (amount) => {
     const points = game.value.balls_left - amount;
@@ -37,10 +52,9 @@ const submitScore = (amount) => {
         preserveScroll: true,
         onSuccess: () => {
             currentScore.value = 0;
-            console.log('success');
         },
         onError: () => {
-            console.log(form.errors);
+            // console.log(form.errors);
         }
     });
 };
@@ -73,7 +87,7 @@ const totalBalls = () => {
             <div class="balls">
                 <div class="row-label">Balls on table</div>
                 <div v-for="ball in totalBalls()" :key="ball" class="item" :class="{ current: game.balls_left === ball, disabled: game.balls_left < ball}">
-                    <input type="radio" class="btn-check" name="ball" :id="'ball_' + ball" autocomplete="off" :checked="game.balls_left === ball" :disabled="game.balls_left < ball" @click="submitScore(ball)">
+                    <input type="radio" class="btn-check" name="ball" :id="'ball_' + ball" autocomplete="off" :checked="game.balls_left === ball" :disabled="game.balls_left < ball" @click="openScoreModal(ball)">
                     <label class="btn" :for="'ball_' + ball">{{ ball }}</label>
                 </div>
             </div>
@@ -94,6 +108,27 @@ const totalBalls = () => {
                 <div class="values">
                     <div class="value" v-for="score in scores" :key="score.id">
                         {{ score.ppi }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="scoreModal"  tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add score</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Run: {{ currentScore }}</p>
+                        <p>Foul points: 0</p>
+                        <p>Balls remaining: {{ game.balls_left }}</p>
+
+                        <div class="mt-4 d-flex">
+                            <button class="btn btn-light" @click="closeScoreModal"> Cancel </button>
+                            <button class="btn btn-primary ms-auto" @click="deleteUser">Confirm</button>
+                        </div>
                     </div>
                 </div>
             </div>
