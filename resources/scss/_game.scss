@@ -69,7 +69,7 @@
 }
 
 .row-label {
-    font-size: 1rem;
+    font-size: 1.1rem;
     text-align: center;
     width: 100%;
     padding: 0.1rem 0;
@@ -161,7 +161,8 @@
 
 .stats {
     display: grid;
-    margin: 1rem 0;
+    margin: 2rem 0;
+    text-align: center;
 
     .stats-row {
         display: flex;
@@ -180,8 +181,19 @@
         font-size: 1.25rem;
         text-align: center;
 
-        > div {
-            width: 50;
+        .list-group {
+            flex: 1;
+            font-size: 1rem;
+
+            .list-group-item {
+                display: flex;
+                align-items: center;
+                gap: .5rem;
+
+                .index {
+                    color: $gray-500;
+                }
+            }
         }
     }
 }

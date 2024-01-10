@@ -176,6 +176,7 @@
         </div>
 
         <div class="stats" v-if="scores && Object.keys(scores).length">
+            <h3>Statistics</h3>
             <div class="stats-row">
                 <div class="row-label">High run</div>
                 <div class="values">
@@ -197,9 +198,9 @@
             <div class="stats-row">
                 <div class="row-label">Innings</div>
                 <div class="values">
-                    <div class="value" v-for="score in scores" :key="score.id">
-                        <div v-for="(inning, index) in score.innings" :key="inning.id">
-                            <div>{{ index }}</div>
+                    <div class="list-group list-group-flush" v-for="score in scores" :key="score.id">
+                        <div v-for="(inning, index) in score.innings" :key="inning.id" class="list-group-item">
+                            <div class="index">#{{ index+1 }}</div>
                             <div>Points: {{ inning.points }}</div>
                         </div>
                     </div>
