@@ -198,12 +198,24 @@
             <div class="stats-row">
                 <div class="row-label">Innings</div>
                 <div class="values">
-                    <div class="list-group list-group-flush" v-for="score in scores" :key="score.id">
-                        <div v-for="(inning, index) in score.innings" :key="inning.id" class="list-group-item">
-                            <div class="index">#{{ index+1 }}</div>
-                            <div>Points: {{ inning.points }}</div>
-                        </div>
-                    </div>
+                    <table class="table table-striped" v-for="score in scores" :key="score.id">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>P</th>
+                                <th>F</th>
+                                <th>T</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(inning, index) in score.innings" :key="inning.id" >
+                                <td class="index">{{ index+1 }}</td>
+                                <td>{{ inning.points }}</td>
+                                <td>{{ inning.foul_points }}</td>
+                                <td>{{ inning.points }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
