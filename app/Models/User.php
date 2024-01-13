@@ -42,4 +42,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function hasAccessToGame(Game $game): bool
+    {
+        return $this->id === $game->player_id || $this->id === $game->opponent_id;
+    }
 }

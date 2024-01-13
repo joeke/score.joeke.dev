@@ -8,7 +8,6 @@ use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
 use App\Models\Game;
 use App\Models\GameType;
-use App\Models\GameScore;
 use App\Models\User;
 
 class GameController extends Controller
@@ -51,30 +50,6 @@ class GameController extends Controller
         ]);
 
         return redirect()->route('game.show', ['id' => $game->id]);
-    }
-
-    /**
-     * Add an inning/score to the game.
-     */
-    public function addScore(Request $request)
-    {
-        $request->validate([
-            'game' => 'required',
-            'points' => 'required',
-            'player_id' => 'required',
-            'balls_remaining' => 'required'
-        ]);
-
-        Game::where('id', $request->game)->update([
-            'balls_left' => $request->balls_remaining
-        ]);
-
-        GameScore::create([
-            'game_id' => $request->game,
-            'player_id' => $request->player_id,
-            'points' => $request->points,
-            'foul_points' => $request->foul_points ?? 0
-        ]);
     }
 
     /**

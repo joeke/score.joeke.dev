@@ -108,7 +108,7 @@
             balls_remaining: ballsRemaining.value,
         });
 
-        form.post(route('game.add-score'), {
+        form.post(route('game.score.store'), {
             onSuccess: () => {
                 // Reset score/fouls/remaining balls
                 currentScore.value = 0;
@@ -126,11 +126,10 @@
 
     const undoLastScore = () => {
         const form = useForm({
-            game: game.value.id,
-            score: game.value.scores.slice(-1)[0].id,
+            id: game.value.scores.slice(-1)[0].id,
         });
 
-        form.delete(route('game.undo-score'), {
+        form.delete(route('game.score.delete'), {
             onSuccess: () => {
                 undoModal.hide();
             }
@@ -198,7 +197,7 @@
             <div class="stats-row">
                 <div class="row-label">Innings</div>
                 <div class="values">
-                    <table class="table table-striped" v-for="score in scores" :key="score.id">
+                    <table class="table table-striped table-sm" v-for="score in scores" :key="score.id">
                         <thead>
                             <tr>
                                 <th>#</th>
