@@ -92,9 +92,14 @@ class GameController extends Controller
             $totalPoints = 0;
             $foulPoints = 0;
 
+            $newInnings = [];
+
             foreach ($innings as $score) {
                 $totalPoints += ($score->points - $score->foul_points);
                 $foulPoints += $score->foul_points;
+                $newInnings[] = array_merge($score->toArray(), [
+                    'total_points' => $totalPoints,
+                ]);
             }
 
             $output[$playerId] = [
@@ -105,7 +110,7 @@ class GameController extends Controller
                 'high_run' => $innings->max('points'),
                 'ppi' => round($totalPoints / count($innings), 2),
                 'innings_count' => count($innings),
-                'innings' => $innings,
+                'innings' => $newInnings,
             ];
         }
 

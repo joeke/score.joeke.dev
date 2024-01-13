@@ -207,11 +207,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(inning, index) in score.innings" :key="inning.id" >
+                            <tr v-for="(inning, index) in score.innings" :key="inning.id">
                                 <td class="index">{{ index+1 }}</td>
                                 <td>{{ inning.points }}</td>
                                 <td>{{ inning.foul_points }}</td>
-                                <td>{{ inning.points }}</td>
+                                <td>{{ inning.total_points }}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -289,6 +289,5 @@
             </div>
         </div>
 
-        <pre>{{ scores }}</pre>
     </AuthenticatedLayout>
 </template>
