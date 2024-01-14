@@ -18,7 +18,7 @@
                     <i class="bi bi-list"></i>
                 </button>
 
-                <a class="btn btn-switch-mode" @click="switchTheme">
+                <a class="btn btn-switch-mode ms-2" @click="switchTheme" title="Switch theme (dark or light)">
                     <i v-if="theme === 'light'" class="bi bi-brightness-high"></i>
                     <i v-else class="bi bi-moon"></i>
                 </a>

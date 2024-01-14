@@ -25,8 +25,8 @@
     let undoModal = ref(null);
 
     onMounted(() => {
-        scoreModal = new Modal('#scoreModal', {});
-        undoModal = new Modal('#undoModal', {});
+        scoreModal = new Modal('#scoreModal', {backdrop: 'static', keyboard: false});
+        undoModal = new Modal('#undoModal', {backdrop: 'static', keyboard: false});
     })
 
     watch(() => ballsRemaining.value, (newValue, oldValue) => {
@@ -119,6 +119,12 @@
         });
     };
 
+    const cancelScore = () => {
+        ballsRemaining.value = ballsRemainingPrevious.value;
+
+        closeScoreModal();
+    }
+
     const switchTurn = () => {
         game.value.active_player = game.value.active_player === game.value.player_id ? game.value.opponent_id : game.value.player_id;
     }
@@ -160,8 +166,12 @@
 
         <div class="actions">
             <div class="buttons">
-                <button class="btn btn-outline-gray-500" @click="switchTurn()" v-if="Object.keys(players).length > 1"><i class="bi bi-arrow-left-right"></i> Switch player</button>
-                <button class="btn btn-outline-gray-500" @click="openUndoModal()"><i class="bi bi-arrow-counterclockwise"></i> Undo last score</button>
+                <button class="btn btn-outline-gray-500" @click="switchTurn()" v-if="Object.keys(players).length > 1">
+                    <i class="bi bi-arrow-left-right"></i> Switch player
+                </button>
+                <button class="btn btn-outline-gray-500" @click="openUndoModal()" v-if="scores && Object.keys(scores).length">
+                    <i class="bi bi-arrow-counterclockwise"></i> Undo last score
+                </button>
             </div>
 
             <div class="balls">
@@ -223,7 +233,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Add score</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" @click="cancelScore"></button>
                     </div>
                     <div class="modal-body">
                         <div class="score-form">
@@ -256,10 +266,17 @@
                                 <label>Current run:</label>
                                 <div>{{ currentScore }}</div>
                             </div>
+
+                            <div class="my-4 fw-bold fst-italic" v-if="ballsRemaining == 1">
+                                Note: this will continue the run for {{ players[game.active_player]['name'] }}, and will reset the balls on table to {{ maxBalls }}.
+                            </div>
+                            <div class="my-4 fw-bold fst-italic" v-else>
+                                Note: this will end the turn for {{ players[game.active_player]['name'] }}.
+                            </div>
                         </div>
 
                         <div class="mt-4 d-flex">
-                            <button class="btn btn-light" @click="closeScoreModal"> Cancel </button>
+                            <button class="btn btn-light" @click="cancelScore"> Cancel </button>
                             <button class="btn btn-primary ms-auto" @click="submitScore">Confirm</button>
                         </div>
                     </div>
