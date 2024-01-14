@@ -18,6 +18,11 @@
                     <i class="bi bi-list"></i>
                 </button>
 
+                <a class="btn btn-switch-mode" @click="switchTheme">
+                    <i v-if="theme === 'light'" class="bi bi-brightness-high"></i>
+                    <i v-else class="bi bi-moon"></i>
+                </a>
+
                 <div class="collapse navbar-collapse" id="mainNavBar">
                     <ul class="navbar-nav main-navbar">
                         <li class="nav-item">
@@ -26,14 +31,8 @@
                         <li class="nav-item">
                             <a class="nav-link" :href="route('profile.edit')">Profile</a>
                         </li>
-                        <li class="nav-item">
-                            <Link class="nav-link" :href="route('logout')" method="post" as="link">Log Out</Link>
-                        </li>
-                        <li class="ms-auto nav-item">
-                            <a class="btn btn-switch-mode" @click="switchTheme">
-                                <i v-if="theme === 'light'" class="bi bi-brightness-high"></i>
-                                <i v-else class="bi bi-moon"></i>
-                            </a>
+                        <li class="ms-lg-auto nav-item">
+                            <Link class="nav-link" :href="route('logout')" method="post" as="a"><i class="bi bi-box-arrow-right"></i> Log out</Link>
                         </li>
                     </ul>
                 </div>
