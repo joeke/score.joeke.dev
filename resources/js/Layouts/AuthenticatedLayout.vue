@@ -1,8 +1,12 @@
 <script setup>
     import { Link } from '@inertiajs/vue3';
+    import { ref } from 'vue';
 
-    const switchMode = () => {
-        console.log('Switching mode')
+    let theme = ref(0);
+
+    const switchTheme = () => {
+        theme.value =  document.querySelector('html').getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark';
+        document.querySelector('html').setAttribute("data-bs-theme", theme.value)
     }
 </script>
 
@@ -26,8 +30,9 @@
                             <Link class="nav-link" :href="route('logout')" method="post" as="link">Log Out</Link>
                         </li>
                         <li class="ms-auto nav-item">
-                            <a class="btn btn-switch-mode" @click="switchMode">
-                                <i class="bi bi-brightness-high"></i>
+                            <a class="btn btn-switch-mode" @click="switchTheme">
+                                <i v-if="theme === 'light'" class="bi bi-brightness-high"></i>
+                                <i v-else class="bi bi-moon"></i>
                             </a>
                         </li>
                     </ul>

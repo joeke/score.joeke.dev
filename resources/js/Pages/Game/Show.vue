@@ -23,7 +23,6 @@
     let foulPoints = ref(0);
     let scoreModal = ref(null);
     let undoModal = ref(null);
-    let lastScore = ref(null);
 
     onMounted(() => {
         scoreModal = new Modal('#scoreModal', {});
