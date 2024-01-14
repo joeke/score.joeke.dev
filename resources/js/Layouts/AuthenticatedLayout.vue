@@ -1,5 +1,9 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
+    import { Link } from '@inertiajs/vue3';
+
+    const switchMode = () => {
+        console.log('Switching mode')
+    }
 </script>
 
 <template>
@@ -11,34 +15,32 @@ import { Link } from '@inertiajs/vue3';
                 </button>
 
                 <div class="collapse navbar-collapse" id="mainNavBar">
-                    <ul class="navbar-nav w-100">
+                    <ul class="navbar-nav main-navbar">
                         <li class="nav-item">
                             <a class="nav-link" :href="route('dashboard')">Dashboard</a>
                         </li>
-
-                        <li class="nav-item dropdown ms-auto">
-                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ $page.props.auth.user.name }}
+                        <li class="nav-item">
+                            <a class="nav-link" :href="route('profile.edit')">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <Link class="nav-link" :href="route('logout')" method="post" as="link">Log Out</Link>
+                        </li>
+                        <li class="ms-auto nav-item">
+                            <a class="btn btn-switch-mode" @click="switchMode">
+                                <i class="bi bi-brightness-high"></i>
                             </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" :href="route('profile.edit')">Profile</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><Link class="dropdown-item" :href="route('logout')" method="post" as="button">Log Out</Link></li>
-                            </ul>
                         </li>
                     </ul>
                 </div>
             </div>
         </nav>
 
-        <!-- Page Heading -->
         <div class="container-xl">
             <header class="my-4" v-if="$slots.header">
                 <slot name="header" />
             </header>
         </div>
 
-        <!-- Page Content -->
         <main class="container-xl">
             <slot />
         </main>

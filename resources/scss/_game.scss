@@ -167,8 +167,7 @@
     .stats-row {
         display: flex;
         flex-direction: column;
-        padding: 0 0 0.5rem;
-        border-top: 1px solid $gray-700;
+        padding: 0 0 1rem;
 
         &:last-child {
             border-bottom: 1px solid $gray-700;
@@ -180,6 +179,10 @@
         justify-content: space-around;
         text-align: center;
         align-items: flex-start;
+
+        .value {
+            font-size: 1.2rem;
+        }
 
         .table {
             border-right: 1px solid $gray-700;

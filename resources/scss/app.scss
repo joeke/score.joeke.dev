@@ -50,3 +50,13 @@
         background: tint-color($tertiary, 10);
     }
 }
+
+.main-navbar {
+    width: 100%;
+    align-items: center;
+}
+
+.btn-switch-mode {
+    padding: .25rem;
+    font-size: 1.2rem;
+}
