@@ -18,14 +18,14 @@ const games = usePage().props.games;
         <div class="mt-5">
             <h2>Games</h2>
 
-            <div class="games-list">
-                <div class="games-list-row games-list-header">
+            <div class="table-list">
+                <div class="table-list-row table-list-header">
                     <div>ID</div>
                     <div>Date</div>
                     <div>Type</div>
                     <div>Player(s)</div>
                 </div>
-                <Link :href="route('game.show', game.id)" class="games-list-row" aria-current="true" v-for="game in games" :key="game.id">
+                <Link :href="route('game.show', game.id)" class="table-list-row" aria-current="true" v-for="game in games" :key="game.id">
                     <div>#{{ game.id }}</div>
                     <div>{{ game.start_date_formatted }}</div>
                     <div>{{ game.type.name }}</div>

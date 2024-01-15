@@ -34,6 +34,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
 
     Route::get('/players', [PlayerController::class, 'index'])->name('players');
     Route::get('/player/new', [PlayerController::class, 'new'])->name('player.new');
+    Route::get('/player/{id}', [PlayerController::class, 'show'])->name('player.show');
 });
 
 require __DIR__.'/auth.php';
