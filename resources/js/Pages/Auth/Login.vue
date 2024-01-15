@@ -31,10 +31,12 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <div class="col-12 col-md-6 m-auto mt-5 p-5 bg-body-tertiary">
+        <h1 class="my-4 text-center">Pool Score</h1>
+
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 m-auto mt-4 mt-md-5 p-4 p-md-5 bg-body-tertiary">
             <Head title="Login" />
 
-            <h1 class="mb-5">Login</h1>
+            <h2 class="mb-4">Login</h2>
 
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
                 {{ status }}
@@ -79,10 +81,13 @@ const submit = () => {
                     </label>
                 </div>
 
-                <div class="d-flex align-items-center justify-content-between mt-5">
+                <div class="mt-4 d-flex justify-content-center">
+                    <PrimaryButton class="btn-lg w-100" :disabled="form.processing">Login</PrimaryButton>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between mt-4">
                     <Link :href="route('register')">Register</Link>
-                    <Link v-if="canResetPassword" :href="route('password.request')">Forgot your password?</Link>
-                    <PrimaryButton class="btn-lg" :disabled="form.processing">Login</PrimaryButton>
+                    <Link v-if="canResetPassword" :href="route('password.request')">Forgot password?</Link>
                 </div>
             </form>
         </div>

@@ -129,8 +129,8 @@
 
         &.current {
             label {
-                background-color: shade-color($primary, 5);
-                border-color: tint-color($primary, 10);
+                background-color: $primary;
+                border-color: $primary;
 
                 &:hover {
                     background-color: shade-color($primary, 15);
