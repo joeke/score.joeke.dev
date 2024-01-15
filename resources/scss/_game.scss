@@ -1,3 +1,40 @@
+.games-list {
+    display: table;
+    width: 100%;
+
+    .games-list-row {
+        display: table-row;
+        border-bottom: 1px solid $gray-700;
+        color: var(--bs-body-color);
+        text-decoration: none;
+
+        > div {
+            display: table-cell;
+            padding: .5rem;
+            border-bottom: 1px solid var(--bs-border-color);
+        }
+
+        &:hover {
+            > div {
+                background-color: var(--bs-secondary-bg);
+            }
+        }
+
+        &:nth-child(odd) {
+            background-color: var(--bs-tertiary-bg);
+        }
+
+        &.games-list-header {
+            font-weight: bold;
+            border-bottom: 2px solid var(--bs-border-color);
+        }
+    }
+
+    .games-list-cell {
+        display: table-cell;
+    }
+}
+
 .game-title {
     display: flex;
     align-items: center;
@@ -113,6 +150,7 @@
             font-size: 1.4rem;
             line-height: 1;
             text-align: center;
+            color: var(--bs-body-color);
             background-color: shade-color($primary, 65);
             border-radius: 50%;
             border: 1px solid shade-color($primary, 55);

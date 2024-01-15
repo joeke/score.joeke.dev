@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GameController;
 use App\Http\Controllers\GameScoreController;
+use App\Http\Controllers\PlayerController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -31,6 +32,8 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::post('/game/score', [GameScoreController::class, 'store'])->name('game.score.store');
     Route::delete('/game/score', [GameScoreController::class, 'delete'])->name('game.score.delete');
 
+    Route::get('/players', [PlayerController::class, 'index'])->name('players');
+    Route::get('/player/new', [PlayerController::class, 'new'])->name('player.new');
 });
 
 require __DIR__.'/auth.php';

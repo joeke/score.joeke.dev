@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use App\Models\GameScore;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Game extends Model
 {
@@ -18,6 +18,7 @@ class Game extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'type_id',
         'player_id',
         'opponent_id',
         'score_goal',
@@ -63,6 +64,11 @@ class Game extends Model
     public function opponent(): BelongsTo
     {
         return $this->belongsTo(User::class, 'opponent_id')->withDefault();
+    }
+
+    public function type(): HasOne
+    {
+        return $this->hasOne(GameType::class, 'id', 'type_id')->withDefault();
     }
 
     /**

@@ -29,6 +29,9 @@
                             <a class="nav-link" :href="route('dashboard')">Dashboard</a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" :href="route('players')">Players</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" :href="route('profile.edit')">Profile</a>
                         </li>
                         <li class="ms-lg-auto nav-item">

@@ -9,7 +9,7 @@ const players = usePage().props.players;
 const gameTypes = usePage().props.gameTypes;
 
 const form = useForm({
-    type: gameTypes[0]?.id || 0,
+    type_id: gameTypes[0]?.id || 0,
     score_goal: 100,
     player_id: usePage().props.auth.user.id || 0,
     opponent_id: 0,
@@ -35,7 +35,7 @@ const submit = () => {
             <div class="row">
                 <div class="col-12 col-md-6 mb-4">
                     <InputLabel for="type" value="Type" />
-                    <select id="type" class="form-select form-select-lg" v-model="form.type">
+                    <select id="type" class="form-select form-select-lg" v-model="form.type_id">
                         <option v-for="gameType in gameTypes" :key="gameType.id" :value="gameType.id">{{ gameType.name }}</option>
                     </select>
                 </div>

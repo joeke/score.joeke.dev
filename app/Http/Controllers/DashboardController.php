@@ -11,7 +11,7 @@ class DashboardController extends Controller
     public function index(): Response
     {
         $games = Game::where('created_by', auth()->user()->id)
-            ->with(['player', 'opponent'])
+            ->with(['player', 'opponent', 'type'])
             ->orderBy('created_at', 'desc')
             ->get();
 

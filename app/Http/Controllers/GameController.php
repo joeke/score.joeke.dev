@@ -34,13 +34,13 @@ class GameController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'type' => 'required',
+            'type_id' => 'required',
             'player_id' => 'required',
             'score_goal' => 'required',
         ]);
 
         $game = Game::create([
-            'type' => $request->type,
+            'type_id' => $request->type_id,
             'player_id' => $request->player_id ?? $request->user()->id,
             'opponent_id' => $request->opponent_id,
             'score_goal' => $request->score_goal,
