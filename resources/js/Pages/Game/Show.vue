@@ -1,7 +1,7 @@
 <script setup>
     import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
     import { Head, usePage, useForm, useRemember } from '@inertiajs/vue3';
-    import { computed, ref, onMounted, watch } from 'vue';
+    import { computed, ref, nextTick, onMounted, watch } from 'vue';
 
     const page = usePage();
     const game = computed({
@@ -17,8 +17,9 @@
     const maxBalls = 15;
 
     let currentScore = ref(0);
-    let ballsRemaining = ref(game.value.balls_left);
-    let ballsRemainingPrevious = useRemember(ballsRemaining.value);
+    let currentScorePrevious = useRemember(currentScore.value);
+    let ballsRemaining = ref(game.value.balls_remaining);
+    let ballsRemainingPrevious = ref(ballsRemaining.value);
     let foulPoints = ref(0);
     let scoreModal = ref(null);
     let undoModal = ref(null);
@@ -94,6 +95,7 @@
         if (ballsRemaining.value === 1) {
             ballsRemaining.value = maxBalls;
             ballsRemainingPrevious.value = maxBalls;
+            currentScorePrevious.value = currentScore.value;
             closeScoreModal();
             return;
         }
@@ -110,6 +112,7 @@
             onSuccess: () => {
                 // Reset score/fouls/remaining balls
                 currentScore.value = 0;
+                currentScorePrevious.value = 0;
                 foulPoints.value = 0;
                 ballsRemainingPrevious.value = ballsRemaining.value;
 
@@ -120,6 +123,10 @@
 
     const cancelScore = () => {
         ballsRemaining.value = ballsRemainingPrevious.value;
+
+        nextTick(() => {
+            currentScore.value = currentScorePrevious.value;
+        });
 
         closeScoreModal();
     }
@@ -134,7 +141,15 @@
         });
 
         form.delete(route('game.score.delete'), {
-            onSuccess: () => {
+            onSuccess: (response) => {
+                if (response?.props?.game?.balls_remaining) {
+                    ballsRemaining.value = response.props.game.balls_remaining;
+                    ballsRemainingPrevious.value = response.props.game.balls_remaining;
+
+                    nextTick(() => {
+                        currentScore.value = 0;
+                    });
+                }
                 undoModal.hide();
             }
         });
@@ -172,7 +187,7 @@
                 <button class="btn btn-outline-gray-500" @click="switchTurn()" v-if="Object.keys(players).length > 1">
                     <i class="bi bi-arrow-left-right"></i> Switch player
                 </button>
-                <button class="btn btn-outline-gray-500" @click="openUndoModal()" v-if="scores && Object.keys(scores).length">
+                <button class="btn btn-outline-gray-500" @click="openUndoModal()" v-if="scores && Object.keys(scores).length" :disabled="currentScore !== 0">
                     <i class="bi bi-arrow-counterclockwise"></i> Undo last score
                 </button>
             </div>
@@ -267,7 +282,7 @@
 
                             <div class="mb-3">
                                 <label>Current run:</label>
-                                <div>{{ currentScore }}</div>
+                                <div>{{ currentScore }}<span v-if="foulPoints > 0"> (-{{ foulPoints }})</span></div>
                             </div>
 
                             <div class="my-4 fw-bold fst-italic" v-if="ballsRemaining == 1">

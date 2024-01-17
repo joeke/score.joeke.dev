@@ -61,9 +61,14 @@ class GameController extends Controller
 
         $scores = $this->calculateScores($game);
 
-        if (!$scores) {
-            $game['balls_left'] = 15;
+        $ballsRemaining = 15;
+
+        $lastScore = $game->scores->last();
+        if ($lastScore) {
+            $ballsRemaining = $lastScore->balls_remaining;
         }
+
+        $game['balls_remaining'] = $ballsRemaining;
 
         $players = [];
         if ($game->player_id && $game->player_id > 0) {

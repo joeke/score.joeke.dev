@@ -20,15 +20,16 @@ class GameScoreController extends Controller
             'balls_remaining' => 'required'
         ]);
 
-        Game::where('id', $request->game)->update([
-            'balls_left' => $request->balls_remaining
-        ]);
+        // Game::where('id', $request->game)->update([
+        //     'balls_left' => $request->balls_remaining
+        // ]);
 
         GameScore::create([
             'game_id' => $request->game,
             'player_id' => $request->player_id,
             'points' => $request->points,
-            'foul_points' => $request->foul_points ?? 0
+            'foul_points' => $request->foul_points ?? 0,
+            'balls_remaining' => $request->balls_remaining
         ]);
     }
 
@@ -46,11 +47,6 @@ class GameScoreController extends Controller
         if (!$request->user()->hasAccessToGame($gamescore->game)) {
             abort(403);
         }
-
-        // TODO: Update balls left on game
-        // $gamescore->game()->update([
-        //     'balls_left' => $gamescore->game->balls_left + $gamescore->points
-        // ]);
 
         $gamescore->delete();
     }

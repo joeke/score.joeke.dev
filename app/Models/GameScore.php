@@ -19,7 +19,8 @@ class GameScore extends Model
         'game_id',
         'player_id',
         'points',
-        'foul_points'
+        'foul_points',
+        'balls_remaining'
     ];
 
     public function game(): BelongsTo
