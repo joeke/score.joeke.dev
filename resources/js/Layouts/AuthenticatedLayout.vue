@@ -12,7 +12,7 @@
 
 <template>
     <section>
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <nav class="navbar navbar-expand-lg bg-body-secondary">
             <div class="container-xl">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavBar" aria-controls="mainNavBar" aria-expanded="false" aria-label="Toggle navigation">
                     <i class="bi bi-list"></i>
@@ -23,21 +23,24 @@
                     <i v-else class="bi bi-moon"></i>
                 </a>
 
-                <div class="collapse navbar-collapse" id="mainNavBar">
-                    <ul class="navbar-nav main-navbar">
-                        <li class="nav-item">
-                            <a class="nav-link" :href="route('dashboard')">Dashboard</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" :href="route('players')">Players</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" :href="route('profile.edit')">Profile</a>
-                        </li>
-                        <li class="ms-lg-auto nav-item">
-                            <Link class="nav-link" :href="route('logout')" method="post" as="a"><i class="bi bi-box-arrow-right"></i> Log out</Link>
-                        </li>
-                    </ul>
+                <div class="collapse navbar-collapse main-navbar" id="mainNavBar">
+                    <div>
+                        <Link class="btn" :href="route('dashboard')" as="button">
+                            <i class="bi bi-house"></i> Dashboard
+                        </Link>
+
+                        <Link class="btn" :href="route('players')" as="button">
+                            <i class="bi bi-people"></i> Players
+                        </Link>
+
+                        <Link class="btn" :href="route('profile.edit')" as="button">
+                            <i class="bi bi-person"></i> Profile
+                        </Link>
+
+                        <Link class="btn btn-sm ms-lg-auto" :href="route('logout')" method="post" as="button">
+                            <i class="bi bi-box-arrow-right"></i> Log out
+                        </Link>
+                    </div>
                 </div>
             </div>
         </nav>

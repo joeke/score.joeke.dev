@@ -2,7 +2,6 @@
     import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
     import { Head, usePage, useForm, useRemember } from '@inertiajs/vue3';
     import { computed, ref, onMounted, watch } from 'vue';
-    import {Modal} from 'bootstrap';
 
     const page = usePage();
     const game = computed({
@@ -86,7 +85,7 @@
     }
 
     const totalBalls = () => {
-        return Array.from({length: 15}, (v, k) => k+1);
+        return Array.from({length: maxBalls}, (v, k) => k+1);
     };
 
     const submitScore = () => {
@@ -139,6 +138,10 @@
                 undoModal.hide();
             }
         });
+    }
+
+    const lastScore = () => {
+        return game.value.scores.slice(-1)[0];
     }
 </script>
 
@@ -292,9 +295,12 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="score-form">
-                            <p>Are you sure you want to delete the previous score?</p>
-                            {{ game.scores.slice(-1) }}
+                        <p>Are you sure you want to delete the previous score?</p>
+
+                        <div class="mb-3" v-if="lastScore()">
+                            <div>Player: <b>{{ players[lastScore().player_id]['name'] }}</b></div>
+                            <div>Points: <b>{{ lastScore().points }}</b></div>
+                            <div>Foul points: <b>{{ lastScore().foul_points }}</b></div>
                         </div>
 
                         <div class="mt-4 d-flex">

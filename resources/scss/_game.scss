@@ -21,8 +21,9 @@
 
         &.active {
             position: relative;
-            background: linear-gradient(180deg, transparent 10%, rgba($secondary, 0.3) 100%);
-            border-color: shade-color($secondary, 15);
+            // background: linear-gradient(180deg, transparent 10%, rgba($secondary, 0.3) 100%);
+            background: radial-gradient(ellipse at bottom center, rgba($secondary, 0.45) -10%, transparent 65%);
+            border-color: shade-color($secondary, 15%);
 
             &::after {
                 content: '';
@@ -33,7 +34,7 @@
                 height: 0;
                 border-left: 8px solid transparent;
                 border-right: 8px solid transparent;
-                border-bottom: 8px solid shade-color($secondary, 15);
+                border-bottom: 8px solid shade-color($secondary, 15%);
             }
         }
     }
@@ -114,17 +115,17 @@
             line-height: 1;
             text-align: center;
             color: var(--bs-body-color);
-            background-color: shade-color($primary, 65);
+            background-color: shade-color($primary, 65%);
             border-radius: 50%;
-            border: 1px solid shade-color($primary, 55);
+            border: 1px solid shade-color($primary, 55%);
             width: 100%;
             height: 0;
             padding: 50% 0;
             cursor: pointer;
 
             &:hover {
-                background-color: shade-color($primary, 40);
-                border-color: shade-color($primary, 30);
+                background-color: shade-color($primary, 40%);
+                border-color: shade-color($primary, 30%);
             }
         }
 
@@ -134,22 +135,22 @@
                 border-color: $primary;
 
                 &:hover {
-                    background-color: shade-color($primary, 15);
-                    border-color: tint-color($primary, 20);
+                    background-color: shade-color($primary, 15%);
+                    border-color: tint-color($primary, 20%);
                 }
             }
         }
 
         &.disabled {
             label {
-                background-color: shade-color($tertiary, 25);
-                border-color: tint-color($tertiary, 10);
+                background-color: shade-color($tertiary, 25%);
+                border-color: tint-color($tertiary, 10%);
                 cursor: not-allowed;
-                color: tint-color($body-color, 40);
+                color: tint-color($body-color, 40%);
 
                 &:hover {
-                    background-color: shade-color($tertiary, 25);
-                    border-color: shade-color($tertiary, 5);
+                    background-color: shade-color($tertiary, 25%);
+                    border-color: shade-color($tertiary, 5%);
                 }
             }
         }

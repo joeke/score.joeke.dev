@@ -2,7 +2,6 @@
 @import "bootstrap/scss/functions";
 
 @import "variables";
-// @import "settings/fonts";
 
 @import "bootstrap/scss/maps";
 @import "bootstrap/scss/mixins";
@@ -20,19 +19,16 @@
 @import "bootstrap/scss/close";
 @import "bootstrap/scss/nav";
 @import "bootstrap/scss/navbar";
-@import "bootstrap/scss/offcanvas";
 @import "bootstrap/scss/list-group";
 @import "bootstrap/scss/modal";
 @import "bootstrap/scss/transitions";
 @import "bootstrap/scss/accordion";
-@import "bootstrap/scss/carousel";
 @import "bootstrap/scss/alert";
 @import "bootstrap/scss/type";
-@import "bootstrap/scss/dropdown";
 @import "bootstrap/scss/modal";
 @import "bootstrap/scss/tables";
 
-@import "_game";
+@import "game";
 
 .modal-open .modal-backdrop {
     backdrop-filter: blur(5px);
@@ -47,19 +43,40 @@
     font-size: 2rem;
 
     &:focus {
-        background: tint-color($tertiary, 10);
+        background: tint-color($tertiary, 10%);
     }
 }
 
 .main-navbar {
     width: 100%;
-    align-items: center;
+
+    > div {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+
+        .btn {
+            background-color: var(--bs-body-bg);
+            color: var(--bs-body-color);
+        }
+
+        @include media-breakpoint-down(lg) {
+            flex-direction: column;
+            padding: .5rem 0;
+
+            .btn {
+                width: 100%;
+            }
+        }
+    }
 }
 
 .btn-switch-mode {
     --bs-btn-active-border-color: transparent;
     padding: .25rem;
     font-size: 1.2rem;
+    line-height: 1;
     order: 1;
 
     @include media-breakpoint-down(lg) {

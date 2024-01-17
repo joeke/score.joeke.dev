@@ -47,6 +47,11 @@ class GameScoreController extends Controller
             abort(403);
         }
 
+        // TODO: Update balls left on game
+        // $gamescore->game()->update([
+        //     'balls_left' => $gamescore->game->balls_left + $gamescore->points
+        // ]);
+
         $gamescore->delete();
     }
 }
