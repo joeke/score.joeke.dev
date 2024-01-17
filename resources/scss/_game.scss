@@ -73,8 +73,7 @@
     font-size: 1.1rem;
     text-align: center;
     width: 100%;
-    padding: 0.1rem 0;
-    margin-bottom: 0.5rem;
+    padding: .2rem 0 .4rem;
     border-bottom: 1px solid $gray-700;
 }
 
@@ -170,24 +169,25 @@
         display: flex;
         flex-direction: column;
         padding: 0 0 1rem;
-
-        &:last-child {
-            border-bottom: 1px solid $gray-700;
-        }
     }
 
     .values {
         display: flex;
-        justify-content: space-around;
         text-align: center;
         align-items: flex-start;
 
         .value {
+            flex: 1;
             font-size: 1.2rem;
+            border-right: 2px solid $gray-700;
+
+            &:last-child {
+                border-right: 0;
+            }
         }
 
         .table {
-            border-right: 1px solid $gray-700;
+            border-right: 2px solid $gray-700;
 
             .index {
                 color: $gray-500;

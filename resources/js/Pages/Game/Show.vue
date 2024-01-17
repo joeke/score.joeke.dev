@@ -282,7 +282,7 @@
 
                             <div class="mb-3">
                                 <label>Current run:</label>
-                                <div>{{ currentScore }}<span v-if="foulPoints > 0"> (-{{ foulPoints }})</span></div>
+                                <div>{{ currentScore }}<span v-if="foulPoints > 0"> - {{ foulPoints }}</span></div>
                             </div>
 
                             <div class="my-4 fw-bold fst-italic" v-if="ballsRemaining == 1">
