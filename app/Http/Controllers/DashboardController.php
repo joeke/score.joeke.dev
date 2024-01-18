@@ -13,6 +13,7 @@ class DashboardController extends Controller
         $games = Game::where('created_by', auth()->user()->id)
             ->with(['player', 'opponent', 'type'])
             ->orderBy('created_at', 'desc')
+            ->limit(5)
             ->get();
 
         return Inertia::render('Dashboard', [

@@ -213,7 +213,7 @@
             </div>
 
             <div class="stats-row">
-                <div class="row-label">Points per inning</div>
+                <div class="row-label">Average run</div>
                 <div class="values">
                     <div class="value" v-for="score in scores" :key="score.id">
                         {{ score.ppi }}

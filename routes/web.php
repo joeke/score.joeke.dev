@@ -6,7 +6,6 @@ use App\Http\Controllers\GameController;
 use App\Http\Controllers\GameScoreController;
 use App\Http\Controllers\PlayerController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,8 +30,9 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::post('/game', [GameController::class, 'store'])->name('game.store');
     Route::post('/game/score', [GameScoreController::class, 'store'])->name('game.score.store');
     Route::delete('/game/score', [GameScoreController::class, 'delete'])->name('game.score.delete');
+    Route::get('/games', [GameController::class, 'overview'])->name('games');
 
-    Route::get('/players', [PlayerController::class, 'index'])->name('players');
+    Route::get('/players', [PlayerController::class, 'overview'])->name('players');
     Route::get('/player/new', [PlayerController::class, 'new'])->name('player.new');
     Route::get('/player/{id}', [PlayerController::class, 'show'])->name('player.show');
 });

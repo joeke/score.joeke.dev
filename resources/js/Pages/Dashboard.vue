@@ -1,6 +1,9 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import GamesList from '@/Pages/Game/Partials/GamesList.vue';
+import { Head, usePage, Link } from '@inertiajs/vue3';
+
+const games = usePage().props.games;
 </script>
 
 <template>
@@ -8,7 +11,7 @@ import GamesList from '@/Pages/Game/Partials/GamesList.vue';
 
     <AuthenticatedLayout>
         <template #header>
-            <h1>Dashboard</h1>
+            <h1>Home</h1>
         </template>
 
         <Link :href="route('game.new')" class="btn btn-primary btn-lg"><i class="bi bi-plus-lg"></i> New game</Link>
@@ -16,7 +19,15 @@ import GamesList from '@/Pages/Game/Partials/GamesList.vue';
         <div class="mt-5">
             <h2>My games</h2>
 
-            <GamesList />
+            <GamesList :games="games" />
+
+            <Link :href="route('games')" class="btn btn-gray-600 mt-3">View all games</Link>
+        </div>
+
+        <div class="mt-5">
+            <h2>My stats</h2>
+
+
         </div>
 
     </AuthenticatedLayout>

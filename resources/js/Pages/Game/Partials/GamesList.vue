@@ -1,7 +1,12 @@
 <script setup>
-import { usePage, Link } from '@inertiajs/vue3';
+import { Link } from '@inertiajs/vue3';
 
-const games = usePage().props.games;
+const props = defineProps({
+    games: {
+        type: Array,
+        default: () => [],
+    }
+});
 </script>
 
 <template>
@@ -10,12 +15,14 @@ const games = usePage().props.games;
             <div>ID</div>
             <div>Date</div>
             <div>Type</div>
+            <div>Race to</div>
             <div>Player(s)</div>
         </div>
         <Link :href="route('game.show', game.id)" class="table-list-row" aria-current="true" v-for="game in games" :key="game.id">
             <div>#{{ game.id }}</div>
             <div>{{ game.start_date_formatted }}</div>
             <div>{{ game.type.name }}</div>
+            <div>{{ game.score_goal }}</div>
             <div>{{ game.player.name }}<span v-if="game.opponent.name"> vs {{ game.opponent.name }}</span></div>
         </Link>
     </div>

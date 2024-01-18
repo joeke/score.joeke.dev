@@ -26,18 +26,22 @@
                 <div class="collapse navbar-collapse main-navbar" id="mainNavBar">
                     <div>
                         <Link class="btn" :href="route('dashboard')" as="button">
-                            <i class="bi bi-house"></i> Dashboard
+                            <i class="bi bi-house"></i> Home
+                        </Link>
+
+                        <Link class="btn" :href="route('games')" as="button">
+                            <i class="bi bi-caret-right-fill"></i> Games
                         </Link>
 
                         <Link class="btn" :href="route('players')" as="button">
                             <i class="bi bi-people"></i> Players
                         </Link>
 
-                        <Link class="btn" :href="route('profile.edit')" as="button">
+                        <Link class="btn btn-sm ms-lg-auto" :href="route('profile.edit')" as="button">
                             <i class="bi bi-person"></i> Profile
                         </Link>
 
-                        <Link class="btn btn-sm ms-lg-auto" :href="route('logout')" method="post" as="button">
+                        <Link class="btn btn-sm" :href="route('logout')" method="post" as="button">
                             <i class="bi bi-box-arrow-right"></i> Log out
                         </Link>
                     </div>

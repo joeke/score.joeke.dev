@@ -8,7 +8,7 @@ use App\Models\User;
 
 class PlayerController extends Controller
 {
-    public function index(): Response
+    public function overview(): Response
     {
         $players = User::all();
 

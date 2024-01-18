@@ -53,6 +53,28 @@ class GameController extends Controller
     }
 
     /**
+     * Display the game overview.
+     */
+    public function overview(): Response
+    {
+        $games = Game::where('created_by', auth()->user()->id)
+            ->with(['player', 'opponent', 'type'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        // $scores = [];
+
+        // foreach ($games as $game) {
+        //     $scores[$game->id] = $this->calculateScores($game);
+        // }
+
+        return Inertia::render('Game/Overview', [
+            'games' => $games,
+            // 'scores' => $scores
+        ]);
+    }
+
+    /**
      * Show the game form.
      */
     public function show(int $id): Response

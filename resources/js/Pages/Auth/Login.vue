@@ -31,11 +31,11 @@ const submit = () => {
 
 <template>
     <GuestLayout>
+        <Head title="Login" />
+
         <h1 class="my-4 text-center">Pool Score</h1>
 
-        <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5 m-auto mt-4 mt-md-5 p-4 p-md-5 bg-body-tertiary">
-            <Head title="Login" />
-
+        <div class="col-12 col-sm-10 col-md-8 col-lg-6 m-auto mt-4 mt-md-5 p-4 p-md-5 bg-body-tertiary">
             <h2 class="mb-4">Login</h2>
 
             <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
@@ -86,7 +86,7 @@ const submit = () => {
                 </div>
 
                 <div class="d-flex align-items-center justify-content-between mt-4">
-                    <Link :href="route('register')">Register</Link>
+                    <!--<Link :href="route('register')">Register</Link> -->
                     <Link v-if="canResetPassword" :href="route('password.request')">Forgot password?</Link>
                 </div>
             </form>

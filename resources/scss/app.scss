@@ -113,6 +113,12 @@
         &.table-list-header {
             font-weight: bold;
             border-bottom: 2px solid var(--bs-border-color);
+
+            &:hover {
+                > div {
+                    background-color: inherit;
+                }
+            }
         }
     }
 }
