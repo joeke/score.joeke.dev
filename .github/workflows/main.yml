@@ -1,14 +1,24 @@
 on: push
-name: 🚀 Deploy website
+name: 🚀 Build & Deploy
 jobs:
   web-deploy:
-    name: 🎉 Deploy
+    name: Build & Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
+    - name: Get latest code
       uses: actions/checkout@v3
-    
-    - name: 📂 Sync files
+
+    - name: Setup Node / NPM
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+
+    - name: NPM build
+      run: |
+        npm install
+        npx run build
+
+    - name: Deploy files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
         server: 149.210.213.94
