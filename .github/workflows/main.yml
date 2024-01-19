@@ -33,6 +33,15 @@ jobs:
       with:
         node-version: '18.x'
 
+    - name: Cache NPM packages
+      id: npm-cache
+      uses: actions/cache@v3
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
+
     - name: NPM install
       run: npm install
 
