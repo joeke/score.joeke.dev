@@ -74,7 +74,7 @@ vhost_type:
   # Normal vHost (-p)
   docroot: |
     # Define the vhost to serve files
-    root         "/shared/httpd/pool.joeke.dev/public";
+    root         "/shared/httpd/pool.joeke.dev/public_html";
     index        __INDEX__;
 
   # Reverse Proxy (-r)

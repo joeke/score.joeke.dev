@@ -9,6 +9,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: 'resources/js/app.js',
+            publicDirectory: 'public_html',
             refresh: true,
         }),
         vue({
