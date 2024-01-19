@@ -161,7 +161,7 @@
 </script>
 
 <template>
-    <Head title="Game" />
+    <Head :title="'Game #' + game.id" />
 
     <AuthenticatedLayout>
         <template #header>
