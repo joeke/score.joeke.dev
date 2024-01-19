@@ -11,10 +11,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        // https://stackoverflow.com/questions/30198669/how-to-change-the-laravel-public-folder-location
-        $this->app->bind('path.public', function() {
-            return base_path() . '/public_html';
-        });
+        //
     }
 
     /**
