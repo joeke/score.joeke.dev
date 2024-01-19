@@ -184,7 +184,7 @@
 
         <div class="actions">
             <div class="buttons">
-                <button class="btn btn-outline-gray-500" @click="switchTurn()" v-if="Object.keys(players).length > 1">
+                <button class="btn btn-outline-gray-500" @click="switchTurn()" v-if="Object.keys(players).length > 1" :disabled="currentScore !== 0">
                     <i class="bi bi-arrow-left-right"></i> Switch player
                 </button>
                 <button class="btn btn-outline-gray-500" @click="openUndoModal()" v-if="scores && Object.keys(scores).length" :disabled="currentScore !== 0">
