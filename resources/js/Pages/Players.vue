@@ -1,8 +1,43 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
-import { Head, usePage, Link } from '@inertiajs/vue3';
+import { Head, usePage, Link, useForm } from '@inertiajs/vue3';
+import InputError from '@/Components/InputError.vue';
+import { ref, onMounted } from 'vue';
+
+let isCreate = ref(true);
+let modal = ref(null);
+
+onMounted(() => {
+    modal = new Modal('#playerModal', {backdrop: 'static', keyboard: false});
+});
+
+const openModal = (id) => {
+    form.reset();
+    isCreate.value = true;
+
+    if (id) {
+        isCreate.value = false;
+        form.name = players.find(player => player.id === id).name;
+    }
+
+    modal.show();
+}
+
+const closeModal = () => {
+    modal.hide();
+}
 
 const players = usePage().props.players;
+
+const form = useForm({
+    name: '',
+});
+
+const save = () => {
+    form.post(route('player.store'), {
+        onSuccess: () => closeModal()
+    });
+};
 </script>
 
 <template>
@@ -13,7 +48,7 @@ const players = usePage().props.players;
             <h1>Players</h1>
         </template>
 
-        <Link :href="route('player.new')" class="btn btn-primary btn-lg"><i class="bi bi-plus-lg"></i> New player</Link>
+        <button class="btn btn-primary btn-lg" @click="openModal(null)"><i class="bi bi-plus-lg"></i> New player</button>
 
         <div class="mt-5">
             <h2>Players</h2>
@@ -22,13 +57,38 @@ const players = usePage().props.players;
                 <div class="table-list-row table-list-header">
                     <div>ID</div>
                     <div>Name</div>
-                    <div>Games</div>
+                    <div>Actions</div>
                 </div>
-                <Link :href="route('player.show', player.id)" class="table-list-row" aria-current="true" v-for="player in players" :key="player.id">
+                <div class="table-list-row" v-for="player in players" :key="player.id">
                     <div>#{{ player.id }}</div>
                     <div>{{ player.name }}</div>
-                    <div>{{ player.games_count }}</div>
-                </Link>
+                    <div><button class="btn btn-gray-500 btn-sm" @click="openModal(player.id)"><i class="bi bi-pencil"></i> Edit</button></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="playerModal"  tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" v-if="isCreate">Add player</h5>
+                        <h5 class="modal-title" v-else>Edit player</h5>
+                        <button type="button" class="btn-close" @click="closeModal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-floating mb-3">
+                            <input class="form-control" id="name" v-model="form.name" placeholder="Player name" @keyup.enter="save" />
+                            <label class="form-label sr-only" for="name">Player name</label>
+
+                            <InputError :message="form.errors.name" class="mt-2" />
+                        </div>
+
+                        <div class="mt-4 d-flex">
+                            <button class="btn btn-light" @click="closeModal"> Cancel </button>
+                            <button class="btn btn-primary ms-auto" :disabled="form.processing" @click="save">Save</button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 

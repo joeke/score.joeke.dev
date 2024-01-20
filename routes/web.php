@@ -33,8 +33,9 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('/games', [GameController::class, 'overview'])->name('games');
 
     Route::get('/players', [PlayerController::class, 'overview'])->name('players');
-    Route::get('/player/new', [PlayerController::class, 'new'])->name('player.new');
     Route::get('/player/{id}', [PlayerController::class, 'show'])->name('player.show');
+    Route::post('/player', [PlayerController::class, 'store'])->name('player.store');
+    Route::patch('/player', [PlayerController::class, 'update'])->name('player.store');
 });
 
 require __DIR__.'/auth.php';

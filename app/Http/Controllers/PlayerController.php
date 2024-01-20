@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
@@ -14,6 +15,21 @@ class PlayerController extends Controller
 
         return Inertia::render('Players', [
             'players' => $players
+        ]);
+    }
+
+    /**
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required'
+        ]);
+
+        User::create([
+            'name' => $request->name,
+            // 'created_by' => $request->user()->id // TODO
         ]);
     }
 }
