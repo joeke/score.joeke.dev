@@ -19,9 +19,7 @@ const games = usePage().props.games;
         <div class="mt-5">
             <h2>My games</h2>
 
-            <GamesList :games="games" />
-
-            <Link :href="route('games')" class="btn btn-gray-600 mt-3">View all games</Link>
+            <GamesList :games="games" :showMoreButton="true"/>
         </div>
 
         <div class="mt-5">
