@@ -11,7 +11,7 @@ class PlayerController extends Controller
 {
     public function overview(): Response
     {
-        $players = User::all();
+        $players = User::where('created_by', auth()->user()->id)->orWhere('id', auth()->user()->id)->get();
 
         return Inertia::render('Players', [
             'players' => $players
@@ -29,7 +29,20 @@ class PlayerController extends Controller
 
         User::create([
             'name' => $request->name,
-            // 'created_by' => $request->user()->id // TODO
+            'created_by' => auth()->user()->id
         ]);
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'id' => 'required',
+            'name' => 'required'
+        ]);
+
+        $player = User::where('id', $request->id)->first();
+
+        $player->name = $request->name;
+        $player->save();
     }
 }

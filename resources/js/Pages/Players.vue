@@ -2,7 +2,7 @@
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { Head, usePage, Link, useForm } from '@inertiajs/vue3';
 import InputError from '@/Components/InputError.vue';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 
 let isCreate = ref(true);
 let modal = ref(null);
@@ -17,7 +17,11 @@ const openModal = (id) => {
 
     if (id) {
         isCreate.value = false;
-        form.name = players.find(player => player.id === id).name;
+        let player = players.value.find(player => player.id === id);
+        if (player) {
+            form.id = player.id;
+            form.name = player.name;
+        }
     }
 
     modal.show();
@@ -27,16 +31,24 @@ const closeModal = () => {
     modal.hide();
 }
 
-const players = usePage().props.players;
+const players = computed(() => usePage().props.players);
 
 const form = useForm({
+    id: null,
     name: '',
 });
 
 const save = () => {
-    form.post(route('player.store'), {
-        onSuccess: () => closeModal()
-    });
+    if (isCreate.value) {
+        form.post(route('player.store'), {
+            onSuccess: () => closeModal()
+        });
+    } else {
+        form.patch(route('player.update'), {
+            onSuccess: () => closeModal()
+        });
+    }
+
 };
 </script>
 
