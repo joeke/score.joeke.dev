@@ -32,25 +32,31 @@ class DashboardController extends Controller
             ->get();
 
         $scores = [];
+        $allScores = [];
+        $highRuns = [];
+
         foreach ($games as $game) {
             $scores[] = collect($game->scores)->toArray();
         }
 
-        $allScores = collect($scores)->collapse()->sortBy('points', SORT_NUMERIC, true)->toArray();
+        if (count($scores)) {
+            $allScores = collect($scores)->collapse()->sortBy('points', SORT_NUMERIC, true)->toArray();
 
-        $highRuns = collect($allScores)->map(function ($score) {
-            return $score['points'];
-        })->flatten()->slice(0, 3)->toArray();
+            $highRuns = collect($allScores)->map(function ($score) {
+                return $score['points'];
+            })->flatten()->slice(0, 3)->toArray();
+        }
+
 
         return [
             'gamesCount' => $games->count(),
             'wins' => 0, // TODO
             'losses' => 0, // TODO
             'highRuns' => $highRuns,
-            'averageRun' => round(collect($allScores)->avg('points'), 2),
-            'totalPoints' => collect($allScores)->sum('points'),
-            'totalFoulPoints' => collect($allScores)->sum('foul_points'),
-            'totalInnings' => collect($allScores)->count()
+            'averageRun' => $allScores ? round(collect($allScores)->avg('points'), 2) : 0,
+            'totalPoints' => $allScores ? collect($allScores)->sum('points') : 0,
+            'totalFoulPoints' => $allScores ? collect($allScores)->sum('foul_points') : 0,
+            'totalInnings' => $allScores ? collect($allScores)->count() : 0
         ];
     }
 }
