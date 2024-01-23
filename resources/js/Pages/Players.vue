@@ -60,9 +60,9 @@ const save = () => {
             <h1>Players</h1>
         </template>
 
-        <button class="btn btn-primary btn-lg" @click="openModal(null)"><i class="bi bi-plus-lg"></i> New player</button>
+        <button class="btn btn-primary" @click="openModal(null)"><i class="bi bi-plus-lg"></i> New player</button>
 
-        <div class="mt-5">
+        <div class="mt-4">
             <h2>Players</h2>
 
             <div class="table-list">

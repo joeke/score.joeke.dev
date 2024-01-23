@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import GamesList from '@/Pages/Game/Partials/GamesList.vue';
-import { Head, usePage } from '@inertiajs/vue3';
+import { Head, usePage, Link } from '@inertiajs/vue3';
 
 const games = usePage().props.games;
 </script>
@@ -14,7 +14,11 @@ const games = usePage().props.games;
             <h1>Games</h1>
         </template>
 
-        <GamesList :games="games" />
+        <Link :href="route('game.new')" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New game</Link>
+
+        <div class="mt-4">
+            <GamesList :games="games" />
+        </div>
 
     </AuthenticatedLayout>
 
