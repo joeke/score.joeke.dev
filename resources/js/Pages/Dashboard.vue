@@ -4,6 +4,7 @@ import GamesList from '@/Pages/Game/Partials/GamesList.vue';
 import { Head, usePage, Link } from '@inertiajs/vue3';
 
 const games = usePage().props.games;
+const statistics = usePage().props.statistics;
 </script>
 
 <template>
@@ -23,9 +24,40 @@ const games = usePage().props.games;
         </div>
 
         <div class="mt-5">
-            <h2>My stats</h2>
+            <h2>My statistics</h2>
 
-
+            <div class="row">
+                <div class="col-12 col-md-4">
+                    <div class="card text-center mb-4">
+                        <div class="card-header">
+                            High runs
+                        </div>
+                        <div class="card-body" v-if="statistics['highRuns'] && statistics['highRuns'].length">
+                            <h3 v-for="highRun in statistics['highRuns']" :key="highRun">{{ highRun }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card text-center mb-4">
+                        <div class="card-header">
+                            Average run
+                        </div>
+                        <div class="card-body">
+                            <h3>{{ statistics.averageRun }}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <div class="card text-center mb-4">
+                        <div class="card-header">
+                            Games played
+                        </div>
+                        <div class="card-body">
+                            <h3>{{ statistics.gamesCount }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </AuthenticatedLayout>
