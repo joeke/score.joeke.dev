@@ -166,9 +166,9 @@
     <AuthenticatedLayout>
         <template #header>
             <div class="game-title">
-                <h2>Game #{{ game.id }}</h2>
-                <h6 class="text-gray-500">Race to: <b>{{ game.score_goal }}</b></h6>
-                <h6 class="text-gray-500">Started on: <b>{{ game.start_date_formatted }}</b></h6>
+                <span>{{ game.type.name }}</span>
+                <span>Race to: <b>{{ game.score_goal }}</b></span>
+                <span><b>{{ game.start_date_formatted }}</b></span>
             </div>
         </template>
 

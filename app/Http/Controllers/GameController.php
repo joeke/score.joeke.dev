@@ -79,7 +79,7 @@ class GameController extends Controller
      */
     public function show(int $id): Response
     {
-        $game = Game::where('id', $id)->with('scores')->first();
+        $game = Game::where('id', $id)->with('scores', 'type')->first();
 
         $scores = $this->calculateScores($game);
 
