@@ -20,7 +20,24 @@ class GameController extends Controller
         $players = User::all();
         $types = GameType::all();
 
-        return Inertia::render('Game/New', [
+        return Inertia::render('Game/Game', [
+            'players' => $players,
+            'gameTypes' => $types
+        ]);
+    }
+
+    /**
+     * Display the edit game form.
+     */
+    public function edit(int $id): Response
+    {
+        $game = Game::where('id', $id)->with('scores', 'type')->first();
+
+        $players = User::all();
+        $types = GameType::all();
+
+        return Inertia::render('Game/Game', [
+            'game' => $game,
             'players' => $players,
             'gameTypes' => $types
         ]);

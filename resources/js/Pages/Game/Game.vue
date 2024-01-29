@@ -7,8 +7,14 @@ import { Head, useForm, usePage } from '@inertiajs/vue3';
 
 const players = usePage().props.players;
 const gameTypes = usePage().props.gameTypes;
+const game = usePage().props.game;
 
-const form = useForm({
+const isCreate = game ? false : true;
+
+const title = isCreate ? 'New game' : 'Edit game';
+const buttonTitle = isCreate ? 'Start game' : 'Save game';
+
+const form = game || useForm({
     type_id: gameTypes[0]?.id || 0,
     score_goal: 100,
     player_id: usePage().props.auth.user.id || 0,
@@ -16,7 +22,8 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('game.store'), {
+    const endpoint = isCreate ? 'game.store' : 'game.update';
+    form.post(route(endpoint), {
         onFinish: () => form.reset()
     });
 };
@@ -24,11 +31,11 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="New game" />
+    <Head :title="title" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h1>New game</h1>
+            <h1>{{ title }}</h1>
         </template>
 
         <form @submit.prevent="submit" class="w-100">
@@ -65,7 +72,7 @@ const submit = () => {
                 </div>
             </div>
 
-            <PrimaryButton class="btn-lg w-100" :disabled="form.processing">Start game</PrimaryButton>
+            <PrimaryButton class="btn-lg w-100" :disabled="form.processing">{{ buttonTitle }}</PrimaryButton>
         </form>
     </AuthenticatedLayout>
 </template>

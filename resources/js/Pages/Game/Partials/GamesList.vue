@@ -10,6 +10,10 @@ const props = defineProps({
         type: Boolean,
         default: false,
     },
+    showRowEditButton: {
+        type: Boolean,
+        default: false,
+    },
 });
 </script>
 
@@ -21,6 +25,7 @@ const props = defineProps({
             <div>Type</div>
             <div>Race to</div>
             <div>Player(s)</div>
+            <div v-if="showRowEditButton"></div>
         </div>
 
         <Link :href="route('game.show', game.id)" class="table-list-row" aria-current="true" v-for="game in games" :key="game.id">
@@ -29,6 +34,9 @@ const props = defineProps({
             <div>{{ game.type.name }}</div>
             <div>{{ game.score_goal }}</div>
             <div>{{ game.player.name }}<span v-if="game.opponent.name"> vs {{ game.opponent.name }}</span></div>
+            <div v-if="showRowEditButton">
+                <Link :href="route('game.edit', game.id)" class="btn btn-sm btn-gray-700"><i class="bi bi-pencil"></i></Link>
+            </div>
         </Link>
 
         <Link :href="route('games')" class="btn btn-gray-600 mt-3" v-if="showMoreButton">View all games</Link>

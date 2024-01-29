@@ -29,8 +29,10 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/game/new', [GameController::class, 'new'])->name('game.new');
-    Route::get('/game/{id}', [GameController::class, 'show'])->name('game.show');
+    Route::get('/game/{id}/edit', [GameController::class, 'edit'])->name('game.edit');
+    Route::get('/game/{id}/show', [GameController::class, 'show'])->name('game.show');
     Route::post('/game', [GameController::class, 'store'])->name('game.store');
+    Route::patch('/game', [GameController::class, 'update'])->name('game.update');
     Route::post('/game/score', [GameScoreController::class, 'store'])->name('game.score.store');
     Route::delete('/game/score', [GameScoreController::class, 'delete'])->name('game.score.delete');
     Route::get('/games', [GameController::class, 'overview'])->name('games');
