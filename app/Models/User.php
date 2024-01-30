@@ -46,6 +46,6 @@ class User extends Authenticatable
 
     public function hasAccessToGame(Game $game): bool
     {
-        return $this->id === $game->player_id || $this->id === $game->opponent_id;
+        return in_array($this->id, [$game->player_id, $game->opponent_id, $game->created_by]);
     }
 }

@@ -14,7 +14,7 @@ const isCreate = game ? false : true;
 const title = isCreate ? 'New game' : 'Edit game';
 const buttonTitle = isCreate ? 'Start game' : 'Save game';
 
-const form = game || useForm({
+const form = useForm(game || {
     type_id: gameTypes[0]?.id || 0,
     score_goal: 100,
     player_id: usePage().props.auth.user.id || 0,
@@ -22,10 +22,16 @@ const form = game || useForm({
 });
 
 const submit = () => {
-    const endpoint = isCreate ? 'game.store' : 'game.update';
-    form.post(route(endpoint), {
-        onFinish: () => form.reset()
-    });
+   if (isCreate) {
+        form.post(route('game.store'), {
+            onFinish: () => form.reset()
+        });
+    } else {
+        form.patch(route('game.update'), {
+            onFinish: () => form.reset()
+        });
+    }
+
 };
 
 </script>

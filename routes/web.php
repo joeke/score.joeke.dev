@@ -33,6 +33,7 @@ Route::group(['middleware' => ['auth', 'verified']], function() {
     Route::get('/game/{id}/show', [GameController::class, 'show'])->name('game.show');
     Route::post('/game', [GameController::class, 'store'])->name('game.store');
     Route::patch('/game', [GameController::class, 'update'])->name('game.update');
+    Route::delete('/game', [GameController::class, 'delete'])->name('game.delete');
     Route::post('/game/score', [GameScoreController::class, 'store'])->name('game.score.store');
     Route::delete('/game/score', [GameScoreController::class, 'delete'])->name('game.score.delete');
     Route::get('/games', [GameController::class, 'overview'])->name('games');

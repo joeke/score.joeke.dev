@@ -17,7 +17,7 @@ const games = usePage().props.games;
         <Link :href="route('game.new')" class="btn btn-primary"><i class="bi bi-plus-lg"></i> New game</Link>
 
         <div class="mt-4">
-            <GamesList :games="games" :showRowEditButton="true" />
+            <GamesList :games="games" :showRowEditButton="true" :showRowDeleteButton="true" />
         </div>
 
     </AuthenticatedLayout>

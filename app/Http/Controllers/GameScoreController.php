@@ -33,7 +33,7 @@ class GameScoreController extends Controller
         ]);
     }
 
-     /**
+    /**
      * Delete a game score.
      */
     public function delete(Request $request)

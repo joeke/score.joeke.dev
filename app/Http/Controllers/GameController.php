@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Http\FormRequest;
 use Inertia\Inertia;
 use Inertia\Response;
 use Illuminate\Http\RedirectResponse;
@@ -70,6 +71,51 @@ class GameController extends Controller
     }
 
     /**
+     * Handle updating a game.
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    public function update(FormRequest $request): RedirectResponse
+    {
+        $request->validate([
+            'id' => 'required',
+            'type_id' => 'required',
+            'player_id' => 'required',
+            'score_goal' => 'required',
+        ]);
+
+        $game = Game::where('id', $request->id)->first();
+
+        if (!$request->user()->hasAccessToGame($game)) {
+            abort(403);
+        }
+
+        $game->fill($request->all());
+        $game->save();
+
+        return redirect()->route('games');
+    }
+
+    /**
+     * Delete a game.
+     */
+    public function delete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        $game = Game::where('id', $request->id)->first();
+
+        if (!$request->user()->hasAccessToGame($game)) {
+            abort(403);
+        }
+
+        $game->scores()->delete();
+        $game->delete();
+    }
+
+    /**
      * Display the game overview.
      */
     public function overview(): Response
@@ -79,15 +125,15 @@ class GameController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // $scores = [];
+        $scores = [];
 
-        // foreach ($games as $game) {
-        //     $scores[$game->id] = $this->calculateScores($game);
-        // }
+        foreach ($games as $game) {
+            $scores[$game->id] = $this->calculateScores($game);
+        }
 
         return Inertia::render('Game/Overview', [
             'games' => $games,
-            // 'scores' => $scores
+            'scores' => $scores
         ]);
     }
 
