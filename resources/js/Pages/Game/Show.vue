@@ -23,10 +23,12 @@
     let foulPoints = ref(0);
     let scoreModal = ref(null);
     let undoModal = ref(null);
+    let resetBallsModal = ref(null);
 
     onMounted(() => {
         scoreModal = new Modal('#scoreModal', {backdrop: 'static', keyboard: false});
         undoModal = new Modal('#undoModal', {backdrop: 'static', keyboard: false});
+        resetBallsModal = new Modal('#resetBallsModal', {backdrop: 'static', keyboard: false});
     })
 
     watch(() => ballsRemaining.value, (newValue, oldValue) => {
@@ -40,14 +42,6 @@
         ballsRemaining.value = ballsAmount;
 
         scoreModal.show();
-    }
-
-    const closeScoreModal = () => {
-        scoreModal.hide();
-    }
-
-    const openUndoModal = () => {
-        undoModal.show();
     }
 
     const countPoints = (amount) => {
@@ -96,7 +90,7 @@
             ballsRemaining.value = maxBalls;
             ballsRemainingPrevious.value = maxBalls;
             currentScorePrevious.value = currentScore.value;
-            closeScoreModal();
+            scoreModal.hide();
             return;
         }
 
@@ -116,7 +110,7 @@
                 foulPoints.value = 0;
                 ballsRemainingPrevious.value = ballsRemaining.value;
 
-                closeScoreModal();
+                scoreModal.hide();
             }
         });
     };
@@ -128,7 +122,7 @@
             currentScore.value = currentScorePrevious.value;
         });
 
-        closeScoreModal();
+        scoreModal.hide();
     }
 
     const switchTurn = () => {
@@ -157,6 +151,15 @@
 
     const lastScore = () => {
         return game.value.scores.slice(-1)[0];
+    }
+
+    const resetBallsOnTable = () => {
+        currentScore.value = 0;
+        currentScorePrevious.value = 0;
+        foulPoints.value = 0;
+        ballsRemaining.value = maxBalls;
+
+        resetBallsModal.hide();
     }
 </script>
 
@@ -187,13 +190,19 @@
                 <button class="btn btn-outline-gray-500" @click="switchTurn()" v-if="Object.keys(players).length > 1 && currentScore === 0">
                     <i class="bi bi-arrow-left-right"></i> Switch player
                 </button>
-                <button class="btn btn-outline-gray-500" @click="openUndoModal()" v-if="scores && Object.keys(scores).length && currentScore === 0">
-                    <i class="bi bi-arrow-counterclockwise"></i> Undo last score
+
+                <button class="btn btn-outline-gray-500" @click="undoModal.show()" v-if="scores && Object.keys(scores).length && currentScore === 0">
+                    <i class="bi bi bi-skip-backward-fill"></i> Undo last score
                 </button>
             </div>
 
             <div class="balls">
-                <div class="row-label">Balls on table</div>
+                <div class="row-label">
+                    <span>Balls on table</span>&nbsp;
+                    <button class="btn btn-sm btn-outline-gray-600" @click="resetBallsModal.show()" v-if="Object.keys(players).length === 1 && scores && Object.keys(scores).length && currentScore === 0 && ballsRemaining !== maxBalls">
+                        <i class="bi bi bi-arrow-counterclockwise"></i> Reset
+                    </button>
+                </div>
                 <div v-for="ball in totalBalls()" :key="ball" class="item" :class="{ current: ballsRemaining === ball, disabled: ballsRemaining < ball}">
                     <input type="radio" class="btn-check" :id="'ball_' + ball" v-model="ballsRemaining" :value="ball" :disabled="ballsRemaining < ball" @click="openScoreModal(ball)">
                     <label class="btn" :for="'ball_' + ball">{{ ball }}</label>
@@ -295,7 +304,7 @@
 
                         <div class="mt-4 d-flex">
                             <button class="btn btn-light" @click="cancelScore"> Cancel </button>
-                            <button class="btn btn-primary ms-auto" @click="submitScore">Confirm</button>
+                            <button class="btn btn-primary ms-auto" @click="submitScore"><i class="bi bi-check-lg"></i> Confirm</button>
                         </div>
                     </div>
                 </div>
@@ -320,6 +329,25 @@
 
                         <div class="mt-4 d-flex">
                             <button class="btn btn-primary ms-auto" @click="undoLastScore">Yes, undo this score</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="resetBallsModal"  tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Reset balls on table</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>This will reset the balls on table to {{ maxBalls }}</p>
+                        <p>Warning! This will not count scores, only reset the balls on table so you can start a new run.</p>
+
+                        <div class="mt-4 d-flex">
+                            <button class="btn btn-primary ms-auto" @click="resetBallsOnTable"><i class="bi bi-check-lg"></i> Confirm</button>
                         </div>
                     </div>
                 </div>
