@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\User;
+use Illuminate\Validation\ValidationException;
 
 class PlayerController extends Controller
 {
@@ -44,6 +45,8 @@ class PlayerController extends Controller
 
         $player->name = $request->name;
         $player->save();
+
+        return back()->with('success', 'Player successfully updated.');
     }
 
     public function delete(Request $request)
@@ -54,9 +57,8 @@ class PlayerController extends Controller
 
         $user = User::where('id', $request->id)->first();
 
-        if ($user->id === auth()->user()->id) {
-            abort(403);
-        }
+        // TODO: check if user has games linked
+        // return back()->with('error', 'Error! This player cannot be deleted, because there are games linked to this player. Please delete those games first.');
 
         $user->delete();
     }

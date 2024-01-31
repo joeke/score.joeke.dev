@@ -57,8 +57,7 @@
 
     const deletePlayer = () => {
         form.delete(route('player.delete'), {
-            onSuccess: () => {
-                router.visit(route('players'));
+            onFinish: () => {
                 deleteModal.hide();
             }
         });

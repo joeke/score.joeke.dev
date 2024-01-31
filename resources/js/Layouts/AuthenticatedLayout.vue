@@ -50,6 +50,16 @@
         </nav>
 
         <div class="container-xl">
+            <div v-if="$page.props.flash.error" class="alert alert-danger alert-dismissible my-4">
+                {{ $page.props.flash.error }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div v-if="$page.props.flash.success" class="alert alert-success alert-dismissible my-4">
+                {{ $page.props.flash.success }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
             <header class="my-4" v-if="$slots.header">
                 <slot name="header" />
             </header>
