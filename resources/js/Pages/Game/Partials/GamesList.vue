@@ -89,6 +89,7 @@
                         <p><b>{{ selectedGame?.start_date_formatted }} - {{ selectedGame?.player.name }}<span v-if="selectedGame?.opponent.name"> vs {{ selectedGame?.opponent.name }}</span></b></p>
 
                         <div class="mt-4 d-flex">
+                            <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                             <button class="btn btn-danger ms-auto" @click="deleteGame"><i class="bi bi-check-lg"></i> Yes, delete this game</button>
                         </div>
                     </div>

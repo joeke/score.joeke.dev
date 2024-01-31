@@ -45,4 +45,19 @@ class PlayerController extends Controller
         $player->name = $request->name;
         $player->save();
     }
+
+    public function delete(Request $request)
+    {
+        $request->validate([
+            'id' => 'required'
+        ]);
+
+        $user = User::where('id', $request->id)->first();
+
+        if ($user->id === auth()->user()->id) {
+            abort(403);
+        }
+
+        $user->delete();
+    }
 }
