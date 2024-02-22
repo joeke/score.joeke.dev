@@ -3,7 +3,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
-import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { Head, useForm, usePage, router } from '@inertiajs/vue3';
 
 const players = usePage().props.players;
 const gameTypes = usePage().props.gameTypes;
@@ -24,11 +24,17 @@ const form = useForm(game || {
 const submit = () => {
    if (isCreate) {
         form.post(route('game.store'), {
-            onFinish: () => form.reset()
+            onFinish: () => {
+                form.reset()
+                router.visit(route('games'));
+            }
         });
     } else {
         form.patch(route('game.update'), {
-            onFinish: () => form.reset()
+            onFinish: () => {
+                form.reset()
+                router.visit(route('games'));
+            }
         });
     }
 

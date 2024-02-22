@@ -161,6 +161,36 @@
 
         resetBallsModal.hide();
     }
+
+    const scoreGoalIsMet = () => {
+        return Object.values(players.value).some(player => player.total_points >= game.value.score_goal);
+    }
+
+    const finishGame = () => {
+        const form = useForm({
+            id: game.value.id,
+            is_finished: true,
+        });
+
+        form.patch(route('game.update'), {
+            data: {
+                testing: false
+            }
+        });
+    }
+
+    const reOpenGame = () => {
+        const form = useForm({
+            id: game.value.id,
+            is_finished: false,
+        });
+
+        form.patch(route('game.update'), {
+            data: {
+                testing: false
+            }
+        });
+    }
 </script>
 
 <template>
@@ -175,17 +205,37 @@
             </div>
         </template>
 
+        <div v-if="scoreGoalIsMet() && game.is_finished == false" class="game-finished-message">
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle"></i> The score goal for this game has been met (Race to {{ game.score_goal }}). Click "Finish game" to end the game.
+            </div>
+
+            <button class="btn btn-primary" @click="finishGame">
+                <i class="bi bi-trophy"></i> Finish game
+            </button>
+        </div>
+
+        <div v-if="game.is_finished" class="game-finished-message">
+            <div class="alert alert-success">
+                <i class="bi bi-check-circle-fill"></i> This game has been finished, no more scores can be added. If you want you can re-open the game.
+            </div>
+
+            <button class="btn btn-primary" @click="reOpenGame">
+                <i class="bi bi-arrow-right-circle"></i> Re-open game
+            </button>
+        </div>
+
         <div class="game">
-            <div class="player" :class="{active: game.active_player === player.id}" v-for="player in players" :key="player.id">
+            <div class="player" :class="{active: game.active_player === player.id && !game.is_finished}" v-for="player in players" :key="player.id">
                 <div class="name">{{ player.name }}</div>
                 <div class="score">{{ player.total_points }}</div>
-                <div class="current-run" :class="{'active' : game.active_player === player.id}">
+                <div class="current-run" v-if="!game.is_finished" :class="{'active' : game.active_player === player.id}">
                     Current run: <span>{{ currentScore }}</span>
                 </div>
             </div>
         </div>
 
-        <div class="actions">
+        <div class="actions" v-if="!game.is_finished">
             <div class="buttons">
                 <button class="btn btn-outline-gray-500" @click="switchTurn()" v-if="Object.keys(players).length > 1 && currentScore === 0">
                     <i class="bi bi-arrow-left-right"></i> Switch player

@@ -38,7 +38,7 @@
         justify-content: space-between;
         gap: .5rem;
         padding: .75rem .75rem 1.25rem;
-        border-bottom: 2px solid transparent;
+        border-bottom: 2px solid $gray-700;
 
         &.active {
             position: relative;
@@ -193,7 +193,7 @@
     .stats-row {
         display: flex;
         flex-direction: column;
-        padding: 0 0 1rem;
+        padding: 0 0 1.5rem;
     }
 
     .values {
@@ -203,7 +203,8 @@
 
         .value {
             flex: 1;
-            font-size: 1.2rem;
+            font-size: 1.5rem;
+            line-height: 1.5;
             border-right: 2px solid $gray-700;
 
             &:last-child {
@@ -241,5 +242,19 @@
                 text-align: center;
             }
         }
+    }
+}
+
+.game-finished-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: .25rem;
+    text-align: center;
+    margin: 0 0 2rem 0;
+
+    .btn {
+        width: fit-content
     }
 }

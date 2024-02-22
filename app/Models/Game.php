@@ -35,7 +35,8 @@ class Game extends Model
      */
     protected $casts = [
         'start_date' => 'datetime',
-        'end_date' => 'datetime'
+        'end_date' => 'datetime',
+        'is_finished' => 'boolean'
     ];
 
     /**

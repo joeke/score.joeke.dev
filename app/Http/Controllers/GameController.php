@@ -75,13 +75,13 @@ class GameController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function update(FormRequest $request): RedirectResponse
+    public function update(FormRequest $request)
     {
         $request->validate([
             'id' => 'required',
-            'type_id' => 'required',
-            'player_id' => 'required',
-            'score_goal' => 'required',
+            'type_id' => 'required_with:player_id,score_goal',
+            'player_id' => 'required_with:type_id,score_goal',
+            'score_goal' => 'required_with:type_id,player_id',
         ]);
 
         $game = Game::where('id', $request->id)->first();
@@ -92,8 +92,6 @@ class GameController extends Controller
 
         $game->fill($request->all());
         $game->save();
-
-        return redirect()->route('games');
     }
 
     /**
