@@ -63,11 +63,14 @@
                 <div><div class="label">Type:</div>{{ game.type.name }}</div>
                 <div><div class="label">Race to:</div>{{ game.score_goal }}</div>
                 <div><div class="label">Player(s):</div>{{ game.player.name }}<span v-if="game.opponent.name"> vs {{ game.opponent.name }}</span></div>
-                <div class="actions">
-                    <i class="bi bi-check-circle-fill text-success fs-5" v-if="game.is_finished"></i>
-                    <Link :href="route('game.show', game.id)" class="btn btn-sm btn-outline-primary"><i class="bi bi-search"></i> View</Link>
-                    <Link v-if="showRowEditButton && !game.is_finished" :href="route('game.edit', game.id)" class="btn btn-sm btn-outline-gray-500"><i class="bi bi-pencil"></i> Edit</Link>
-                    <button v-if="showRowDeleteButton" @click="showDeleteModal(game)" class="btn btn-sm btn-danger"><i class="bi bi-trash-fill"></i> Delete</button>
+                <div>
+                    <div class="actions">
+                        <Link :href="route('game.show', game.id)" class="btn btn-sm btn-outline-primary"><i class="bi bi-search"></i> View</Link>
+                        <Link v-if="showRowEditButton && !game.is_finished" :href="route('game.edit', game.id)" class="btn btn-sm btn-outline-gray-500"><i class="bi bi-pencil"></i> Edit</Link>
+                        <button v-if="showRowDeleteButton" @click="showDeleteModal(game)" class="btn btn-sm btn-outline-danger"><i class="bi bi-trash-fill"></i> Delete</button>
+                        <i class="bi bi-check-circle-fill text-primary status-icon" v-if="game.is_finished"></i>
+                        <i class="bi bi-hourglass-split text-gray-500 status-icon" v-else></i>
+                    </div>
                 </div>
             </div>
 

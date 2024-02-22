@@ -7,10 +7,12 @@
     let isCreate = true;
     let editModal = ref(null);
     let deleteModal = ref(null);
+    let inviteUserModal = ref(null);
 
     onMounted(() => {
         editModal = new Modal('#editModal', {backdrop: 'static', keyboard: false});
         deleteModal = new Modal('#deleteModal', {backdrop: 'static', keyboard: false});
+        inviteUserModal = new Modal('#inviteUserModal', {backdrop: 'static', keyboard: false});
     });
 
     const players = computed(() => usePage().props.players);
@@ -46,6 +48,12 @@
         deleteModal.show();
     }
 
+    const openInviteUserModalModal = (player) => {
+        form.reset();
+
+        inviteUserModal.show();
+    }
+
     const save = () => {
         const method = isCreate ? 'post' : 'patch';
         const endpoint = isCreate ? 'player.store' : 'player.update';
@@ -62,6 +70,10 @@
             }
         });
     };
+
+    const inviteAsUser = () => {
+        // TODO
+    }
 </script>
 
 <template>
@@ -86,9 +98,12 @@
                 <div class="table-list-row" v-for="player in players" :key="player.id">
                     <div>#{{ player.id }}</div>
                     <div>{{ player.name }}</div>
-                    <div class="actions" v-if="user.id !== player.id">
-                        <button class="btn btn-sm btn-outline-gray-500" @click="openEditModal(player)"><i class="bi bi-pencil"></i> Edit</button>
-                        <button class="btn btn-sm btn-danger" @click="openDeleteModal(player)"><i class="bi bi-trash-fill"></i> Delete</button>
+                    <div>
+                        <div class="actions" v-if="user.id !== player.id">
+                            <button class="btn btn-sm btn-outline-gray-500" @click="openEditModal(player)"><i class="bi bi-pencil"></i> Edit</button>
+                            <button class="btn btn-sm btn-outline-danger" @click="openDeleteModal(player)"><i class="bi bi-trash-fill"></i> Delete</button>
+                            <button class="btn btn-invite-user" @click="openInviteUserModalModal(player)"><i class="bi bi-person-plus"></i></button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -133,6 +148,28 @@
                         <div class="mt-4 d-flex">
                             <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
                             <button class="btn btn-danger ms-auto" @click="deletePlayer"><i class="bi bi-check-lg"></i> Yes, delete this player</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal" id="inviteUserModal"  tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Invite player as user</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Here you can invite this player for a user account.</p>
+                        <p><b>{{ form.name }}</b></p>
+
+                        <p>TODO: add form with email address.</p>
+
+                        <div class="mt-4 d-flex">
+                            <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+                            <button class="btn btn-primary ms-auto" @click="inviteAsUser">Send invite</button>
                         </div>
                     </div>
                 </div>

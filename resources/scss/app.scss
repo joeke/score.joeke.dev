@@ -105,7 +105,7 @@
                 display: none;
             }
 
-            &.actions {
+            .actions {
                 display: flex;
                 justify-content: flex-end;
                 align-items: center;
@@ -113,6 +113,11 @@
                 width: 100%;
                 margin: 0;
                 grid-column: 1 / -1;
+
+                .status-icon {
+                    font-size: 1.5rem;
+                    line-height: 1;
+                }
             }
         }
 
@@ -154,12 +159,21 @@
                     text-transform: uppercase;
                 }
 
-                &.actions {
+                &:has(.actions) {
                     width: 100%;
+                    grid-column: span 2;
                     justify-content: center;
 
                     > * {
                         flex: 1;
+                    }
+
+                    .actions {
+                        justify-content: flex-start;
+
+                        .status-icon {
+                            margin-left: auto;
+                        }
                     }
 
                     .btn {
@@ -172,5 +186,17 @@
                 display: none;
             }
         }
+    }
+}
+
+.btn-invite-user {
+    --bs-btn-active-border-color: transparent;
+    padding: .15rem;
+    font-size: 1.5rem;
+    line-height: 1;
+
+    &:hover,
+    &:focus {
+        color: $primary;
     }
 }
