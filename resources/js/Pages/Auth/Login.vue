@@ -74,11 +74,9 @@ const submit = () => {
                     <InputError class="mt-2" :message="form.errors.password" />
                 </div>
 
-                <div>
-                    <label class="flex items-center">
-                        <Checkbox name="remember" v-model:checked="form.remember" />
-                        <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">Remember me</span>
-                    </label>
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" v-model="form.remember" id="flexCheckDefault" />
+                    <label class="form-check-label" for="flexCheckDefault">Remember me</label>
                 </div>
 
                 <div class="mt-4 d-flex justify-content-center">
@@ -86,8 +84,16 @@ const submit = () => {
                 </div>
 
                 <div class="d-flex align-items-center justify-content-between mt-4">
-                    <!--<Link :href="route('register')">Register</Link> -->
                     <Link v-if="canResetPassword" :href="route('password.request')">Forgot password?</Link>
+                </div>
+
+                <hr />
+
+                <div class="mt-4 text-center">
+                    <div class="text-muted">
+                        <p>Don't have an account yet?</p>
+                    </div>
+                    <Link :href="route('register')" class="btn btn-gray-600 bg-gradient">Register</Link>
                 </div>
             </form>
         </div>
