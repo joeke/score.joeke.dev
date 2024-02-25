@@ -101,7 +101,7 @@
                     <div>
                         <div class="actions" v-if="user.id !== player.id">
                             <button class="btn btn-sm btn-outline-gray-500" @click="openEditModal(player)"><i class="bi bi-pencil"></i> Edit</button>
-                            <button class="btn btn-sm btn-outline-danger" @click="openDeleteModal(player)"><i class="bi bi-trash-fill"></i> Delete</button>
+                            <button v-if="user.is_admin" class="btn btn-sm btn-outline-danger" @click="openDeleteModal(player)"><i class="bi bi-trash-fill"></i> Delete</button>
                             <button class="btn btn-invite-user" @click="openInviteUserModalModal(player)"><i class="bi bi-person-plus"></i></button>
                         </div>
                     </div>

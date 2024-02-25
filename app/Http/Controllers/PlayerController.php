@@ -12,7 +12,11 @@ class PlayerController extends Controller
 {
     public function overview(): Response
     {
-        $players = User::where('created_by', auth()->user()->id)->orWhere('id', auth()->user()->id)->get();
+        $players = User::where('created_by', auth()->user()->id)
+            ->orWhere(function ($query) {
+                $query->whereNotNull(['email', 'password']);
+            })
+            ->get();
 
         return Inertia::render('Players', [
             'players' => $players
@@ -56,6 +60,8 @@ class PlayerController extends Controller
         ]);
 
         $user = User::where('id', $request->id)->first();
+
+        $this->authorize('delete', $user);
 
         // TODO: check if user has games linked
         // return back()->with('error', 'Error! This player cannot be deleted, because there are games linked to this player. Please delete those games first.');
