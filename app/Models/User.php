@@ -44,8 +44,22 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $guarded = [
+        'is_admin'
+    ];
+
     public function hasAccessToGame(Game $game): bool
     {
         return in_array($this->id, [$game->player_id, $game->opponent_id, $game->created_by]);
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->is_admin;
     }
 }
