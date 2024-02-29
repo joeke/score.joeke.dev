@@ -26,14 +26,12 @@ const submit = () => {
         form.post(route('game.store'), {
             onFinish: () => {
                 form.reset()
-                router.visit(route('games'));
             }
         });
     } else {
         form.patch(route('game.update'), {
             onFinish: () => {
                 form.reset()
-                router.visit(route('games'));
             }
         });
     }

@@ -170,26 +170,20 @@
         const form = useForm({
             id: game.value.id,
             is_finished: true,
+            redirect: false
         });
 
-        form.patch(route('game.update'), {
-            data: {
-                testing: false
-            }
-        });
+        form.patch(route('game.update'));
     }
 
     const reOpenGame = () => {
         const form = useForm({
             id: game.value.id,
             is_finished: false,
+            redirect: false
         });
 
-        form.patch(route('game.update'), {
-            data: {
-                testing: false
-            }
-        });
+        form.patch(route('game.update'));
     }
 </script>
 

@@ -92,6 +92,10 @@ class GameController extends Controller
 
         $game->fill($request->all());
         $game->save();
+
+        if (!$request->has('redirect') || $request->redirect === 'true') {
+            return redirect('games')->with('success', 'Game successfully updated.');
+        }
     }
 
     /**
