@@ -29,6 +29,8 @@
         scoreModal = new Modal('#scoreModal', {backdrop: 'static', keyboard: false});
         undoModal = new Modal('#undoModal', {backdrop: 'static', keyboard: false});
         resetBallsModal = new Modal('#resetBallsModal', {backdrop: 'static', keyboard: false});
+
+        setScreenWakeLock();
     })
 
     watch(() => ballsRemaining.value, (newValue, oldValue) => {
@@ -162,6 +164,25 @@
         resetBallsModal.hide();
     }
 
+    const currentFouls = () => {
+        const lastScore = game.value.scores.slice(-1)[0];
+        if ((!lastScore) || (lastScore && lastScore.foul_points === 0)) {
+            return 0;
+        }
+
+        const secondLastScore = game.value.scores.slice(-2)[0];
+        if ((!secondLastScore) || (secondLastScore && secondLastScore.foul_points === 0)) {
+            return lastScore.foul_points;
+        }
+
+        const thirdLastScore = game.value.scores.slice(-3)[0];
+        if ((!thirdLastScore) || (thirdLastScore && thirdLastScore.foul_points === 0)) {
+            return lastScore.foul_points + secondLastScore.foul_points;
+        }
+
+        return lastScore.foul_points + secondLastScore.foul_points + thirdLastScore.foul_points;
+    }
+
     const scoreGoalIsMet = () => {
         return Object.values(players.value).some(player => player.total_points >= game.value.score_goal);
     }
@@ -184,6 +205,17 @@
         });
 
         form.patch(route('game.update'));
+    }
+
+    const setScreenWakeLock = () => {
+        if ('wakeLock' in navigator) {
+            navigator.wakeLock.request('screen').then(() => {
+                // Screen Wake Lock has been activated
+                console.info('Screen Wake Lock has been activated');
+            }).catch((err) => {
+                console.error(`Error: ${err}`);
+            });
+        }
     }
 </script>
 
@@ -224,8 +256,9 @@
                 <div class="name">{{ player.name }}</div>
                 <div class="score">{{ player.total_points }}</div>
                 <div class="current-run" v-if="!game.is_finished" :class="{'active' : game.active_player === player.id}">
-                    Current run: <span>{{ currentScore }}</span>
+                    <div>Current run: <span>{{ currentScore }}</span></div>
                 </div>
+                <div v-if="currentFouls() > 0" class="badge text-bg-warning">Fouls: <b>{{ currentFouls() }}</b></div>
             </div>
         </div>
 
