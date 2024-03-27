@@ -31,6 +31,8 @@
         resetBallsModal = new Modal('#resetBallsModal', {backdrop: 'static', keyboard: false});
 
         setScreenWakeLock();
+
+        console.log(players.value)
     })
 
     watch(() => ballsRemaining.value, (newValue, oldValue) => {
