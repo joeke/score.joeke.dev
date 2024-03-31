@@ -120,6 +120,12 @@
                     line-height: 1;
                 }
             }
+
+            &.w-min {
+                width: 1%;
+                white-space: nowrap;
+                padding-right: 2rem;
+            }
         }
 
         &:hover {

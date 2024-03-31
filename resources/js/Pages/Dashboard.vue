@@ -23,46 +23,35 @@ const statistics = usePage().props.statistics;
             <GamesList :games="games" :showMoreButton="true"/>
         </div>
 
-        <div class="mt-5">
+        <div class="my-5">
             <h2 class="mb-3">My statistics</h2>
 
-            <div class="row">
-                <div class="col-12 col-md-4">
-                    <div class="card text-center mb-4">
-                        <div class="card-header">
-                            High runs
-                        </div>
+            <div class="table-list" v-if="games.length > 0">
+                <div class="table-list-row">
+                    <div class="w-min">Games played:</div>
+                    <div>{{ statistics.games.total }}</div>
+                </div>
 
-                        <div class="card-body" v-if="statistics['highRuns'] && statistics['highRuns'].length">
-                            <h3 v-for="highRun in statistics['highRuns']" :key="highRun">{{ highRun }}</h3>
-                        </div>
+                <div class="table-list-row">
+                    <div class="w-min">Vs opponent:</div>
+                    <div>{{ statistics.games.versus }}</div>
+                </div>
 
-                        <div class="card-body" v-else>
-                            <em class="text-muted">No high runs yet</em>
-                        </div>
+                <div class="table-list-row">
+                    <div class="w-min">Solo:</div>
+                    <div>{{ statistics.games.solo }}</div>
+                </div>
+
+                <div class="table-list-row">
+                    <div class="w-min">High runs:</div>
+                    <div>
+                        {{ statistics.highRuns.length ? statistics.highRuns.join(', ') : 'No high runs yet' }}
                     </div>
                 </div>
-                <div class="col-12 col-md-4">
-                    <div class="card text-center mb-4">
-                        <div class="card-header">
-                            Average run
-                        </div>
 
-                        <div class="card-body">
-                            <h3>{{ statistics.averageRun }}</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-4">
-                    <div class="card text-center mb-4">
-                        <div class="card-header">
-                            Games played
-                        </div>
-
-                        <div class="card-body">
-                            <h3>{{ statistics.gamesCount }}</h3>
-                        </div>
-                    </div>
+                <div class="table-list-row">
+                    <div class="w-min">Average run:</div>
+                    <div>{{ statistics.averageRun }}</div>
                 </div>
             </div>
         </div>

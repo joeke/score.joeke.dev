@@ -47,9 +47,17 @@ class DashboardController extends Controller
             })->flatten()->slice(0, 3)->toArray();
         }
 
+        // Find all games versus an opponent
+        $versusGames = $games->filter(function ($game) {
+            return ($game->player_id === auth()->user()->id && $game->opponent_id > 0) || $game->opponent_id === auth()->user()->id;
+        });
 
         return [
-            'gamesCount' => $games->count(),
+            'games' => [
+                'total' => $games->count(),
+                'versus' => $versusGames->count(),
+                'solo' => $games->count() - $versusGames->count()
+            ],
             'wins' => 0, // TODO
             'losses' => 0, // TODO
             'highRuns' => $highRuns,
