@@ -32,7 +32,9 @@
 
         setScreenWakeLock();
 
-        console.log(players.value)
+        document.addEventListener('visibilitychange', async () => {
+            setScreenWakeLock();
+        });
     })
 
     watch(() => ballsRemaining.value, (newValue, oldValue) => {
@@ -166,25 +168,6 @@
         resetBallsModal.hide();
     }
 
-    const currentFouls = () => {
-        const lastScore = game.value.scores.slice(-1)[0];
-        if ((!lastScore) || (lastScore && lastScore.foul_points === 0)) {
-            return 0;
-        }
-
-        const secondLastScore = game.value.scores.slice(-2)[0];
-        if ((!secondLastScore) || (secondLastScore && secondLastScore.foul_points === 0)) {
-            return lastScore.foul_points;
-        }
-
-        const thirdLastScore = game.value.scores.slice(-3)[0];
-        if ((!thirdLastScore) || (thirdLastScore && thirdLastScore.foul_points === 0)) {
-            return lastScore.foul_points + secondLastScore.foul_points;
-        }
-
-        return lastScore.foul_points + secondLastScore.foul_points + thirdLastScore.foul_points;
-    }
-
     const scoreGoalIsMet = () => {
         return Object.values(players.value).some(player => player.total_points >= game.value.score_goal);
     }
@@ -260,7 +243,12 @@
                 <div class="current-run" v-if="!game.is_finished" :class="{'active' : game.active_player === player.id}">
                     <div>Current run: <span>{{ currentScore }}</span></div>
                 </div>
-                <div v-if="currentFouls() > 0" class="badge text-bg-warning">Fouls: <b>{{ currentFouls() }}</b></div>
+                <div class="d-flex gap-2" v-if="player.running_fouls > 0">
+                    <div class="badge text-bg-warning">
+                        Fouls: <b>{{ player.running_fouls }}</b>
+                    </div>
+                    <span v-if="player.running_fouls > 1" class="badge text-bg-danger">!</span>
+                </div>
             </div>
         </div>
 
@@ -278,7 +266,7 @@
             <div class="balls">
                 <div class="row-label">
                     <span>Balls on table</span>&nbsp;
-                    <button class="btn btn-sm btn-outline-gray-600" @click="resetBallsModal.show()" v-if="Object.keys(players).length === 1 && scores && Object.keys(scores).length && currentScore === 0 && ballsRemaining !== maxBalls">
+                    <button class="btn btn-outline-gray-600 px-2 py-1" @click="resetBallsModal.show()" v-if="scores && Object.keys(scores).length && currentScore === 0 && ballsRemaining !== maxBalls">
                         <i class="bi bi bi-arrow-counterclockwise"></i> Reset
                     </button>
                 </div>
@@ -342,8 +330,8 @@
                         <button type="button" class="btn-close" @click="cancelScore"></button>
                     </div>
                     <div class="modal-body">
-                        <div class="score-form">
-                            <div class="mb-3" v-if="game.active_player && players[game.active_player]">
+                        <div class="score-form" v-if="game.active_player && players[game.active_player]">
+                            <div class="mb-3">
                                 <label>For player:</label>
                                 <div>
                                     <span>{{ players[game.active_player]['name'] }}</span>
@@ -371,6 +359,10 @@
                             <div class="mb-3">
                                 <label>Current run:</label>
                                 <div>{{ currentScore }}<span v-if="foulPoints > 0"> - {{ foulPoints }}</span></div>
+                            </div>
+
+                            <div class="alert alert-warning" v-if="players[game.active_player]['running_fouls'] > 1">
+                                Warning! This player is currently on {{ players[game.active_player]['running_fouls'] }} fouls. Another foul will result in an additional 15 foul points, and a re-rack.
                             </div>
 
                             <div class="my-4 fw-bold fst-italic" v-if="ballsRemaining == 1">
@@ -423,7 +415,7 @@
                     </div>
                     <div class="modal-body">
                         <p>This will reset the balls on table to {{ maxBalls }}</p>
-                        <p>Warning! This will not count scores, only reset the balls on table so you can start a new run.</p>
+                        <div class="alert alert-warning">Warning! This will not count scores, only reset the balls on table so a new break can be started.</div>
 
                         <div class="mt-4 d-flex">
                             <button class="btn btn-primary ms-auto" @click="resetBallsOnTable"><i class="bi bi-check-lg"></i> Confirm</button>

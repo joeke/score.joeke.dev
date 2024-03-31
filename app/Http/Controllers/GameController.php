@@ -188,7 +188,6 @@ class GameController extends Controller
 
             foreach ($innings as $score) {
                 $totalPoints += ($score->points - $score->foul_points);
-                // $foulPoints += $score->foul_points;
                 $newInnings[] = array_merge($score->toArray(), [
                     'total_points' => $totalPoints,
                 ]);
@@ -198,7 +197,6 @@ class GameController extends Controller
                 'id' => $playerId,
                 'name' => $this->getPlayerName($playerId),
                 'total_points' => $totalPoints,
-                // 'foul_points' => $foulPoints,
                 'high_run' => $innings->max('points'),
                 'ppi' => round($totalPoints / count($innings), 2),
                 'innings_count' => count($innings),
@@ -231,30 +229,35 @@ class GameController extends Controller
         ];
     }
 
+    /**
+     * Find the last 3 innings and check if there are fouls.
+     * Only if last inning has a foul, then we add it to the running fouls.
+     *
+     * @param array $scores
+     * @return integer
+     */
     private function calculateRunningFouls($scores) {
         $runningFouls = 0;
-        $foulPoints = 0;
 
-        // Find the last 3 innings and check if there are fouls.
-        // Only if last inning has a foul, then we add it to the running fouls.
-        // If all three innings have fouls, then an additional -15 foul points are counted (as per straight pool rules)
         if (isset($scores['innings'])) {
             $lastScores = array_slice($scores['innings'], -3, 3);
 
-            if (isset($lastScores[2]) && isset($lastScores[2]['foul_points']) && $lastScores[2]['foul_points'] > 0) {
-                $runningFouls += $lastScores[2]['foul_points'];
+            foreach ($lastScores as $score) {
+                $runningFouls += $score['foul_points'];
+
+                if ($score['foul_points'] === 0) {
+                    $runningFouls = 0;
+                }
+
+                $lastTurnFoul = $score['foul_points'] > 0;
             }
 
-            if (count($lastScores) === 3 && $lastScores[0]['foul_points'] > 0 && $lastScores[1]['foul_points'] > 0 && $lastScores[2]['foul_points'] > 0) {
-                $runningFouls += 15;
+            if (!$lastTurnFoul) {
+                return 0;
             }
         }
 
         return $runningFouls;
-    }
-
-    private function getInningFoulPoints($inning) {
-        return $inning['foul_points'] > 0;
     }
 
     /**
