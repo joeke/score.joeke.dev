@@ -58,10 +58,10 @@ jobs:
           **/.git*
           **/.git*/**
 
-    - name: executing remote ssh commands using password
+    - name: Run Laravel migrations
       uses: appleboy/ssh-action@v1.0.3
       with:
         host: 149.210.213.94
         username: ${{ secrets.ssh_username }}
         password: ${{ secrets.ssh_password }}
-        script: cd ~/domains/pool.joeke.dev && whoami
+        script: cd ~/domains/pool.joeke.dev && php artisan migrate --force
