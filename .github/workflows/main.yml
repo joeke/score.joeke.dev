@@ -11,7 +11,7 @@ jobs:
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
-        php-version: 8.2
+        php-version: '8.2'
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
@@ -64,4 +64,4 @@ jobs:
         host: 149.210.213.94
         username: ${{ secrets.ssh_username }}
         password: ${{ secrets.ssh_password }}
-        script: cd ~/domains/pool.joeke.dev && php artisan migrate --force
+        script: cd ~/domains/pool.joeke.dev && /usr/local/php82/bin/php artisan migrate --force
