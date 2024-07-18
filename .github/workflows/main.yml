@@ -55,6 +55,7 @@ jobs:
         user: ${{ secrets.ssh_username }}
         pass: ${{ secrets.ssh_password }}
         remoteDir: '/home/pool_joeke_dev/htdocs'
+        parallel: 2
 
     - name: Run Laravel migrations
       uses: appleboy/ssh-action@v1.0.3
@@ -62,4 +63,4 @@ jobs:
         host: 141.138.138.119
         username: ${{ secrets.ssh_username }}
         password: ${{ secrets.ssh_password }}
-        script: cd ~/domains/pool.joeke.dev && /usr/local/php82/bin/php artisan migrate --force
+        script: cd /home/pool_joeke_dev/htdocs && php artisan migrate --force
