@@ -51,9 +51,10 @@ jobs:
     - name: Deploy files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: 149.210.213.94
-        username: pool@joeke.dev
-        password: ${{ secrets.ftp_password }}
+        server: 141.138.138.119
+        username: ${{ secrets.ssh_username }}
+        password: ${{ secrets.ssh_password }}
+        port: 22
         log-level: 'minimal'
         exclude: |
           **/.git*
@@ -62,7 +63,7 @@ jobs:
     - name: Run Laravel migrations
       uses: appleboy/ssh-action@v1.0.3
       with:
-        host: 149.210.213.94
+        host: 141.138.138.119
         username: ${{ secrets.ssh_username }}
         password: ${{ secrets.ssh_password }}
         script: cd ~/domains/pool.joeke.dev && /usr/local/php82/bin/php artisan migrate --force
