@@ -1,4 +1,3 @@
-**/.git*
-**/.git*/**
-.ddev
-node_modules
+.git/
+.ddev/
+node_modules/
