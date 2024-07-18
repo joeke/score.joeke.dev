@@ -52,14 +52,22 @@ class DashboardController extends Controller
             return ($game->player_id === auth()->user()->id && $game->opponent_id > 0) || $game->opponent_id === auth()->user()->id;
         });
 
+        // Find all games where is_finished = 1 and player score is higher than opponent score
+        $gamesWon = $versusGames->filter(function ($game) {
+            $scores = collect($game->scores)->toArray();
+            $playerScore = collect($scores)->where('player_id', auth()->user()->id)->sum('points');
+            $opponentScore = collect($scores)->where('player_id', '!=', auth()->user()->id)->sum('points');
+
+            return $game->is_finished && $playerScore > $opponentScore;
+        });
+
         return [
             'games' => [
                 'total' => $games->count(),
                 'versus' => $versusGames->count(),
-                'solo' => $games->count() - $versusGames->count()
+                'solo' => $games->count() - $versusGames->count(),
+                'wins' => $gamesWon->count(),
             ],
-            'wins' => 0, // TODO
-            'losses' => 0, // TODO
             'highRuns' => $highRuns,
             'averageRun' => $allScores ? round(collect($allScores)->avg('points'), 2) : 0,
             'totalPoints' => $allScores ? collect($allScores)->sum('points') : 0,

@@ -34,7 +34,7 @@ const statistics = usePage().props.statistics;
 
                 <div class="table-list-row">
                     <div class="w-min">Vs opponent:</div>
-                    <div>{{ statistics.games.versus }}</div>
+                    <div>{{ statistics.games.versus }} (wins: {{ statistics.games.wins }})</div>
                 </div>
 
                 <div class="table-list-row">
