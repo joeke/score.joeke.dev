@@ -49,16 +49,12 @@ jobs:
       run: npm run build
 
     - name: Deploy files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      uses: pressidium/lftp-mirror-action@v1
       with:
-        server: 141.138.138.119
-        username: ${{ secrets.ssh_username }}
-        password: ${{ secrets.ssh_password }}
-        port: 22
-        log-level: 'minimal'
-        exclude: |
-          **/.git*
-          **/.git*/**
+        host: 141.138.138.119
+        user: ${{ secrets.ssh_username }}
+        pass: ${{ secrets.ssh_password }}
+        remoteDir: '/home/pool_joeke_dev/htdocs'
 
     - name: Run Laravel migrations
       uses: appleboy/ssh-action@v1.0.3
