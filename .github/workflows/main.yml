@@ -55,7 +55,7 @@ jobs:
         username: ${{ secrets.ssh_username }}
         password: ${{ secrets.ssh_password }}
         port: 22
-        server-dir: '/home/pool_joeke_dev/htdocs'
+        server-dir: '/home/pool_joeke_dev/htdocs/'
         log-level: 'minimal'
         exclude: |
             **/.git*
