@@ -56,6 +56,7 @@ jobs:
         pass: ${{ secrets.ssh_password }}
         remoteDir: '/home/pool_joeke_dev/htdocs'
         parallel: 6
+        onlyNewer: true
         ignoreFile: '.lftp_ignore'
         options: '--verbose'
 
