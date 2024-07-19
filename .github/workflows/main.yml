@@ -59,18 +59,27 @@ jobs:
     #     remoteDir: '/home/pool_joeke_dev/htdocs'
     #     options: '--verbose'
 
+    # - name: Deploy files
+    #   uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+    #   with:
+    #     server: 141.138.138.119
+    #     username: ${{ secrets.ssh_username }}
+    #     password: ${{ secrets.ssh_password }}
+    #     server-dir: '/home/pool_joeke_dev/htdocs/'
+    #     port: 22
+    #     exclude: |
+    #       **/.git*
+    #       **/.git*/**
+    #       **/node_modules/**
+
     - name: Deploy files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      uses: appleboy/scp-action@v0.1.7
       with:
-        server: 141.138.138.119
+        host: 141.138.138.119
         username: ${{ secrets.ssh_username }}
         password: ${{ secrets.ssh_password }}
-        server-dir: '/home/pool_joeke_dev/htdocs/'
-        port: 22
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
+        source: './,!./.git,!./.github,!./node_modules'
+        target: '/home/pool_joeke_dev/htdocs/'
 
     - name: Run Laravel migrations
       uses: appleboy/ssh-action@v1.0.3
