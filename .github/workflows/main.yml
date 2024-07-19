@@ -65,7 +65,7 @@ jobs:
         server: 'sftp://141.138.138.119'
         username: ${{ secrets.ssh_username }}
         password: ${{ secrets.ssh_password }}
-        server-dir: '/home/pool_joeke_dev/htdocs'
+        server-dir: '/home/pool_joeke_dev/htdocs/'
         exclude: |
           **/.git*
           **/.git*/**
