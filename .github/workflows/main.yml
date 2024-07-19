@@ -55,7 +55,9 @@ jobs:
         user: ${{ secrets.ssh_username }}
         pass: ${{ secrets.ssh_password }}
         remoteDir: '/home/pool_joeke_dev/htdocs'
-        parallel: 2
+        parallel: 6
+        ignoreFile: '.lftp_ignore'
+        options: '--verbose'
 
     - name: Run Laravel migrations
       uses: appleboy/ssh-action@v1.0.3
