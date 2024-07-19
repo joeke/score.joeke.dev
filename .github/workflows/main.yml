@@ -62,10 +62,11 @@ jobs:
     - name: Deploy files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: 'sftp://141.138.138.119'
+        server: 141.138.138.119
         username: ${{ secrets.ssh_username }}
         password: ${{ secrets.ssh_password }}
         server-dir: '/home/pool_joeke_dev/htdocs/'
+        port: 22
         exclude: |
           **/.git*
           **/.git*/**
