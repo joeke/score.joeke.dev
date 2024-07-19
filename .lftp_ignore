@@ -1,3 +1,4 @@
-.git/
 .ddev/
+.git/
+.github/
 node_modules/
