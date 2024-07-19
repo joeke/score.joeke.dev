@@ -7,6 +7,8 @@ jobs:
     steps:
     - name: Get latest code
       uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
@@ -56,8 +58,6 @@ jobs:
         pass: ${{ secrets.ssh_password }}
         remoteDir: '/home/pool_joeke_dev/htdocs'
         parallel: 6
-        onlyNewer: true
-        ignoreFile: '.lftp_ignore'
         options: '--verbose'
 
     - name: Run Laravel migrations
