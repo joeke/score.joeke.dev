@@ -78,7 +78,7 @@ jobs:
         host: 141.138.138.119
         username: ${{ secrets.ssh_username }}
         password: ${{ secrets.ssh_password }}
-        source: './,!./.git,!./.github,!./node_modules'
+        source: './,!./ddev,!./.git,!./.github,!./node_modules'
         target: '/home/pool_joeke_dev/htdocs/'
 
     - name: Run Laravel migrations
