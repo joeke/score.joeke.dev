@@ -50,14 +50,26 @@ jobs:
     - name: NPM build
       run: npm run build
 
+    # - name: Deploy files
+    #   uses: pressidium/lftp-mirror-action@v1
+    #   with:
+    #     host: 141.138.138.119
+    #     user: ${{ secrets.ssh_username }}
+    #     pass: ${{ secrets.ssh_password }}
+    #     remoteDir: '/home/pool_joeke_dev/htdocs'
+    #     options: '--verbose'
+
     - name: Deploy files
-      uses: pressidium/lftp-mirror-action@v1
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        host: 141.138.138.119
-        user: ${{ secrets.ssh_username }}
-        pass: ${{ secrets.ssh_password }}
-        remoteDir: '/home/pool_joeke_dev/htdocs'
-        options: '--verbose'
+        server: 'sftp://141.138.138.119'
+        username: ${{ secrets.ssh_username }}
+        password: ${{ secrets.ssh_password }}
+        server-dir: '/home/pool_joeke_dev/htdocs'
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
 
     - name: Run Laravel migrations
       uses: appleboy/ssh-action@v1.0.3
