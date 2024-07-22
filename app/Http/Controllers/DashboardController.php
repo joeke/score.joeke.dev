@@ -26,9 +26,7 @@ class DashboardController extends Controller
     {
         $games = Game::where('player_id', auth()->user()->id)
             ->orWhere('opponent_id', auth()->user()->id)
-            ->with(['scores' => function ($query) {
-                $query->where('player_id', auth()->user()->id);
-            }])
+            ->with('scores')
             ->get();
 
         $scores = [];
@@ -36,16 +34,19 @@ class DashboardController extends Controller
         $highRuns = [];
 
         foreach ($games as $game) {
-            $scores[] = collect($game->scores)->toArray();
+            $scores[] = collect($game->scores)->filter(function ($score) {
+                return $score->player_id === auth()->user()->id;
+            })->toArray();
         }
 
         if (count($scores)) {
             $allScores = collect($scores)->collapse()->sortBy('points', SORT_NUMERIC, true)->toArray();
-
-            $highRuns = collect($allScores)->map(function ($score) {
-                return $score['points'];
-            })->flatten()->slice(0, 3)->toArray();
         }
+
+        // Collect the top 5 high runs
+        $highRuns = collect($allScores)->map(function ($score) {
+            return $score['points'];
+        })->flatten()->slice(0, 5)->toArray();
 
         // Find all games versus an opponent
         $versusGames = $games->filter(function ($game) {
@@ -54,9 +55,8 @@ class DashboardController extends Controller
 
         // Find all games where is_finished = 1 and player score is higher than opponent score
         $gamesWon = $versusGames->filter(function ($game) {
-            $scores = collect($game->scores)->toArray();
-            $playerScore = collect($scores)->where('player_id', auth()->user()->id)->sum('points');
-            $opponentScore = collect($scores)->where('player_id', '!=', auth()->user()->id)->sum('points');
+            $playerScore = collect($game->scores)->where('player_id', auth()->user()->id)->sum('points');
+            $opponentScore = collect($game->scores)->where('player_id', '!=', auth()->user()->id)->sum('points');
 
             return $game->is_finished && $playerScore > $opponentScore;
         });

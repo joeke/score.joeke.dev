@@ -20,7 +20,7 @@ const statistics = usePage().props.statistics;
         <div class="mt-5">
             <h2 class="mb-3">My games</h2>
 
-            <GamesList :games="games" :showMoreButton="true"/>
+            <GamesList :games="games" :showMoreButton="true" :totalCount="statistics.games.total" />
         </div>
 
         <div class="my-5">
@@ -40,6 +40,11 @@ const statistics = usePage().props.statistics;
                 <div class="table-list-row">
                     <div class="w-min">Solo:</div>
                     <div>{{ statistics.games.solo }}</div>
+                </div>
+
+                <div class="table-list-row">
+                    <div class="w-min">Total points:</div>
+                    <div>{{ statistics.totalPoints }}</div>
                 </div>
 
                 <div class="table-list-row">

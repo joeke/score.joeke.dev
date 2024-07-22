@@ -7,6 +7,10 @@
             type: Array,
             default: () => [],
         },
+        totalCount: {
+            type: Number,
+            default: 0,
+        },
         showMoreButton: {
             type: Boolean,
             default: false,
@@ -74,7 +78,7 @@
                 </div>
             </div>
 
-            <Link :href="route('games')" class="btn btn-gray-600 mt-3" v-if="showMoreButton">View all games</Link>
+            <Link :href="route('games')" class="btn btn-gray-600 mt-3" v-if="showMoreButton">View all {{ totalCount }} games</Link>
         </div>
 
         <div v-else class="py-2">
