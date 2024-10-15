@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use App\Models\Game;
 use App\Models\GameType;
 use App\Models\User;
+use Carbon\Carbon;
 
 class GameController extends Controller
 {
@@ -62,7 +63,7 @@ class GameController extends Controller
             'player_id' => $request->player_id ?? $request->user()->id,
             'opponent_id' => $request->opponent_id,
             'score_goal' => $request->score_goal,
-            'start_date' => $request->start_date,
+            'start_date' => $request->start_date ?? Carbon::now(),
             'end_date' => $request->end_date,
             'created_by' => $request->user()->id
         ]);
